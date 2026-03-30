@@ -1,35 +1,110 @@
+<div align="center">
+
+<!-- LOGO -->
+<!-- ![RiseOn.Agents Logo](docs/logo.png) -->
+
 # RiseOn.Agents
 
 **Context-Engineered Sub-agent Architecture Framework for AI Coding Platforms**
 
-RiseOn.Agents é um framework que transforma definições centralizadas de agentes em configurações otimizadas para múltiplas plataformas de AI Coding, utilizando **Sub-agent Architecture** como modelo canônico de distribuição de contexto.
+<br>
 
-## Visão do Projeto
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![Python 3.11+](https://img.shields.io/badge/Python-3.11%2B-3776AB?logo=python&logoColor=white)](https://www.python.org/)
+[![Textual](https://img.shields.io/badge/Textual-TUI-F9A825?logo=python&logoColor=white)](https://textual.textualize.io/)
+[![Status](https://img.shields.io/badge/Status-Active%20Development-green.svg)]()
+[![Platforms](https://img.shields.io/badge/Platforms-4%20Supported-purple.svg)](#supported-platforms)
 
-Imagine definir seus agentes de IA uma única vez e ter configurações otimizadas geradas automaticamente para qualquer plataforma de AI Coding que você utiliza. Sem duplicação, sem inconsistências, sem manutenção manual de múltiplos formatos.
+<br>
 
-**RiseOn.Agents** nasceu da necessidade de:
+> **One definition. Every platform. Zero inconsistency.**
 
-- **Centralizar definições**: Uma fonte de verdade para todos os agentes
-- **Eliminar fragmentação**: Fim da manutenção manual em múltiplos formatos
-- **Otimizar contexto**: Distribuição inteligente que maximiza eficiência
-- **Garantir consistência**: Mesmos agentes, mesma qualidade, em todas as plataformas
+[Getting Started](#getting-started) ·
+[Architecture](#agent-architecture) ·
+[Platforms](#supported-platforms) ·
+[Contributing](#contributing)
 
-## O Problema
+</div>
 
-AI Coding Agents são poderosos, mas enfrentam dois desafios críticos:
+---
+
+## Table of Contents
+
+- [Project Vision](#project-vision)
+- [The Problem](#the-problem)
+- [The Solution](#the-solution-sub-agent-architecture)
+- [Benefits](#benefits)
+- [Agent Architecture](#agent-architecture)
+- [Supported Platforms](#supported-platforms)
+- [Getting Started](#getting-started)
+- [Project Structure](#project-structure)
+- [Development Principles](#development-principles)
+- [Contributing](#contributing)
+
+---
+
+## Project Vision
+
+> Define your AI agents **once** — get optimized configurations for **every** AI Coding platform you use. No duplication. No inconsistencies. No manual maintenance of multiple formats.
+
+**RiseOn.Agents** was born from the need to:
+
+<table>
+<tr>
+<td align="center" width="25%">
+
+### 🎯 Centralize
+
+One source of truth for all agents
+
+</td>
+<td align="center" width="25%">
+
+### 🔗 Unify
+
+End manual maintenance across formats
+
+</td>
+<td align="center" width="25%">
+
+### ⚡ Optimize
+
+Intelligent context distribution
+
+</td>
+<td align="center" width="25%">
+
+### ✅ Standardize
+
+Same quality, every platform
+
+</td>
+</tr>
+</table>
+
+---
+
+## The Problem
+
+AI Coding Agents are powerful, but face two critical challenges:
+
+### 1. Monolithic Context
 
 ```
-PROBLEMA 1: Contexto Monolítico
 ┌─────────────────────────────────────────────────────────────┐
-│ 1 Agent com TODO o contexto (200k tokens)                   │
-│ ├── Identity (500 tokens)                                   │
-│ ├── ALL Skills (50k tokens)  ← DESPERDÍCIO                 │
-│ ├── ALL Rules (10k tokens)   ← RUÍDO                       │
-│ └── ALL Knowledge (140k tokens)                             │
+│  1 Agent with ALL context (200k tokens)                      │
+│  ├── Identity (500 tokens)                                   │
+│  ├── ALL Skills (50k tokens)    WASTE                        │
+│  ├── ALL Rules (10k tokens)     NOISE                        │
+│  └── ALL Knowledge (140k tokens)                             │
+│                                                              │
+│  Result: Slow, expensive, unfocused responses                │
 └─────────────────────────────────────────────────────────────┘
+```
 
-PROBLEMA 2: Formato Fragmentado
+### 2. Fragmented Format
+
+```
 ┌────────────┐  ┌────────────┐  ┌────────────┐  ┌────────────┐
 │ Kilo Code  │  │  OpenCode  │  │  GitHub    │  │  Windsurf  │
 │ .kilo/     │  │ .opencode/ │  │ .github/   │  │ .windsurf/ │
@@ -37,12 +112,17 @@ PROBLEMA 2: Formato Fragmentado
 └────────────┘  └────────────┘  └────────────┘  └────────────┘
      ↑               ↑               ↑               ↑
      └───────────────┴───────────────┴───────────────┘
-                 Manutenção manual = INCONSISTÊNCIA
+              Manual maintenance = INCONSISTENCY
 ```
 
-## A Solução: Sub-agent Architecture
+> [!WARNING]
+> Maintaining separate configurations for each platform leads to drift, bugs, and wasted developer hours.
 
-Sub-agent Architecture não é apenas delegação de tarefas - é uma **estratégia de Context Engineering**:
+---
+
+## The Solution: Sub-agent Architecture
+
+Sub-agent Architecture is not just task delegation — it's a **Context Engineering strategy**:
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
@@ -51,7 +131,7 @@ Sub-agent Architecture não é apenas delegação de tarefas - é uma **estraté
 │                                                                 │
 │  Primary Agent: software-engineer (8k tokens)                   │
 │  ├── Identity + Guardrails (700 tokens)                         │
-│  ├── Handoff Registry (300 tokens) ← SABE QUEM DELEGAR         │
+│  ├── Handoff Registry (300 tokens)  KNOWS WHO TO DELEGATE       │
 │  └── Core Skills only (7k tokens)                               │
 │                                                                 │
 │      ┌──────────────┐  ┌──────────────┐  ┌──────────────┐      │
@@ -60,45 +140,156 @@ Sub-agent Architecture não é apenas delegação de tarefas - é uma **estraté
 │      │  ON-DEMAND   │  │  ON-DEMAND   │  │  ON-DEMAND   │      │
 │      └──────────────┘  └──────────────┘  └──────────────┘      │
 │                                                                 │
-│  Resultado: 8k base + 5k quando necessário                      │
-│             vs. 200k tokens sempre carregados                   │
+│  Result: 8k base + 5k when needed                               │
+│          vs. 200k tokens always loaded                          │
 └─────────────────────────────────────────────────────────────────┘
 ```
 
-### Modelo de Contexto em Camadas
+### How It Works
 
-| Camada | Quando Carrega | Conteúdo | Tokens |
-|--------|----------------|----------|--------|
-| **Layer 1: Orchestration** | Sempre | Identity, Guardrails, Handoff Registry | ~1k |
-| **Layer 2: Delegation** | No handoff | Subagent Identity, Task Context | ~4k |
-| **Layer 3: Execution** | On-demand | Skills específicos da tarefa | ~2-5k |
+```mermaid
+flowchart LR
+    subgraph canonical["Canonical Definition"]
+        A[".agent.md\n(Primary Agent)"]
+        B["rules/\n(Guardrails)"]
+        C["skills/\n(Knowledge)"]
+        D["subagents/\n(Specialists)"]
+    end
 
-## Benefícios
+    subgraph generate["Generation"]
+        E{{"RiseOn.Agents\nGenerator"}}
+    end
 
-### Para Desenvolvedores
+    subgraph platforms["Target Platforms"]
+        F[".kilo/"]
+        G[".opencode/"]
+        H[".github/"]
+        I[".windsurf/"]
+    end
 
-- **Uma definição, múltiplas plataformas**: Defina uma vez, gere para todas
-- **TUI intuitivo**: Interface visual moderna para configuração e preview
-- **Validação automática**: Garante compatibilidade com cada plataforma
-- **Zero lock-in**: Troque de plataforma sem retrabalho
+    A & B & C & D --> E
+    E --> F & G & H & I
 
-### Para Times
+    style canonical fill:#1a1a2e,stroke:#e94560,color:#fff
+    style generate fill:#16213e,stroke:#0f3460,color:#fff
+    style platforms fill:#0f3460,stroke:#533483,color:#fff
+```
 
-- **Consistência garantida**: Mesmos agentes em todos os ambientes
-- **Onboarding simplificado**: Novos membros têm os mesmos agentes configurados
-- **Versionamento centralizado**: Agentes no Git, junto com o código
-- **Colaboração facilitada**: Contribuições em formato único e padronizado
+### Layered Context Model
 
-### Para Organizações
+| Layer | When Loaded | Contents | Tokens |
+|-------|-------------|----------|--------|
+| **1: Orchestration** | Always | Identity, Guardrails, Handoff Registry | ~1k |
+| **2: Delegation** | On handoff | Subagent Identity, Task Context | ~4k |
+| **3: Execution** | On-demand | Task-specific Skills | ~2-5k |
 
-- **Governança de AI Agents**: Controle centralizado de comportamentos
-- **Auditoria simplificada**: Uma fonte de verdade para compliance
-- **Escalabilidade**: Adicione plataformas sem multiplicar esforço
-- **Redução de custos**: Menos tokens = menos gastos com API
+### Token Savings
 
-## Arquitetura de Agentes
+```mermaid
+%%{init: {'theme':'dark'}}%%
+xychart-beta
+    title "Token Usage Comparison"
+    x-axis ["Monolithic", "Sub-agent (base)", "Sub-agent (peak)"]
+    y-axis "Tokens (thousands)" 0 --> 220
+    bar [200, 8, 13]
+```
 
-### Hierarquia: 5 Primary Agents + 26 Subagents
+---
+
+## Benefits
+
+<table>
+<tr>
+<td width="33%" valign="top">
+
+### For Developers
+
+- **One definition, multiple platforms** — Define once, generate for all
+- **Intuitive TUI** — Modern visual interface for configuration and preview
+- **Automatic validation** — Ensures compatibility with each platform
+- **Zero lock-in** — Switch platforms without rework
+
+</td>
+<td width="33%" valign="top">
+
+### For Teams
+
+- **Guaranteed consistency** — Same agents across all environments
+- **Simplified onboarding** — New members get pre-configured agents
+- **Centralized versioning** — Agents in Git, alongside the code
+- **Easy collaboration** — Single, standardized format
+
+</td>
+<td width="33%" valign="top">
+
+### For Organizations
+
+- **AI Agent governance** — Centralized control of behaviors
+- **Simplified auditing** — One source of truth for compliance
+- **Scalability** — Add platforms without multiplying effort
+- **Cost reduction** — Fewer tokens = lower API spending
+
+</td>
+</tr>
+</table>
+
+---
+
+## Agent Architecture
+
+### Hierarchy: 5 Primary Agents + 26 Subagents
+
+```mermaid
+graph TB
+    PA["Primary Agents (5)"]
+
+    PA --> A["architect"]
+    PA --> SE["software-engineer"]
+    PA --> DE["devops-engineer"]
+    PA --> PM["product-manager"]
+    PA --> PO["product-owner"]
+
+    A --> A1["adr-generator"]
+    A --> A2["ddd-specialist"]
+    A --> A3["governance-specialist"]
+    A --> A4["hlbpa-specialist"]
+    A --> A5["mermaid-diagrammer"]
+    A --> A6["microservices-specialist"]
+    A --> A7["system-architecture-reviewer"]
+    A --> A8["technical-writer"]
+
+    SE --> SE1["api-architect"]
+    SE --> SE2["code-reviewer"]
+    SE --> SE3["dotnet-specialist"]
+    SE --> SE4["frontend-developer"]
+    SE --> SE5["refactoring-specialist"]
+    SE --> SE6["test-writer"]
+
+    DE --> DE1["cicd-specialist"]
+    DE --> DE2["cloud-architect"]
+    DE --> DE3["security-auditor"]
+
+    PM --> PM1["market-researcher"]
+    PM --> PM2["mvp-definer"]
+    PM --> PM3["product-strategist"]
+    PM --> PM4["requirements-analyst"]
+    PM --> PM5["roadmap-planner"]
+
+    PO --> PO1["acceptance-criteria-writer"]
+    PO --> PO2["agile-coach"]
+    PO --> PO3["backlog-manager"]
+    PO --> PO4["sprint-planner"]
+
+    style PA fill:#e94560,stroke:#fff,color:#fff
+    style A fill:#16213e,stroke:#e94560,color:#fff
+    style SE fill:#16213e,stroke:#e94560,color:#fff
+    style DE fill:#16213e,stroke:#e94560,color:#fff
+    style PM fill:#16213e,stroke:#e94560,color:#fff
+    style PO fill:#16213e,stroke:#e94560,color:#fff
+```
+
+<details>
+<summary>View full text hierarchy</summary>
 
 ```
 Primary Agents (5)
@@ -140,72 +331,78 @@ Primary Agents (5)
     └── sprint-planner
 ```
 
-### Estrutura de Definição (Fonte Canônica)
+</details>
+
+### Definition Structure (Canonical Source)
 
 ```
 agents/{agent-name}/
-├── {agent-name}.agent.md    # Definição principal do agente
-├── rules/                   # Regras e guardrails
-│   ├── shared.guardrails.md       # Aplicadas a todos
-│   └── {domain}.instructions.md   # Específicas do domínio
-├── skills/                  # Conhecimento especializado
+├── {agent-name}.agent.md          # Main agent definition
+├── rules/                         # Rules and guardrails
+│   ├── shared.guardrails.md       # Applied to all
+│   └── {domain}.instructions.md   # Domain-specific
+├── skills/                        # Specialized knowledge
 │   ├── skill-1/SKILL.md
 │   └── skill-2/SKILL.md
-└── subagents/              # Sub-agentes especializados
+└── subagents/                     # Specialized sub-agents
     ├── subagent-1.agent.md
     └── subagent-2.agent.md
 ```
 
-## Plataformas Suportadas
+---
 
-RiseOn.Agents gera configurações nativas para múltiplas plataformas de AI Coding:
+## Supported Platforms
 
-| Plataforma | IDE/Editor | Formato de Saída |
-|------------|------------|------------------|
+RiseOn.Agents generates native configurations for multiple AI Coding platforms:
+
+| Platform | IDE / Editor | Output Format |
+|----------|--------------|---------------|
 | **Kilo Code** | JetBrains IDEs | `.kilo/`, `.kilocode/`, `kilo.json` |
-| **OpenCode** | Terminal/CLI | `.opencode/` |
+| **OpenCode** | Terminal / CLI | `.opencode/` |
 | **GitHub Copilot** | VS Code, JetBrains | `.github/agents/`, `.github/prompts/` |
 | **Windsurf** | Windsurf Editor | `.windsurf/` |
 
-### Mapeamento Conceitual
+### Conceptual Mapping
 
-O framework traduz conceitos universais para cada plataforma:
+The framework translates universal concepts to each platform:
 
-| RiseOn.Agents | Conceito | Descrição |
-|---------------|----------|-----------|
-| `{agent}.agent.md` | Primary Agent | Agente principal com orquestração |
-| `subagents/*.md` | Subagent | Especialista delegado on-demand |
-| `rules/` | Guardrails/Rules | Comportamentos e restrições |
-| `skills/` | Skills/Knowledge | Conhecimento especializado |
-| `handoffs` | Delegation | Roteamento entre agentes |
+| RiseOn.Agents | Concept | Description |
+|---------------|---------|-------------|
+| `{agent}.agent.md` | Primary Agent | Main agent with orchestration |
+| `subagents/*.md` | Subagent | On-demand delegated specialist |
+| `rules/` | Guardrails / Rules | Behaviors and restrictions |
+| `skills/` | Skills / Knowledge | Specialized knowledge |
+| `handoffs` | Delegation | Routing between agents |
 
-### Exemplo: Estrutura Gerada
+### Example: Generated Structure
 
-Ao selecionar uma plataforma no TUI, a seguinte estrutura é gerada:
+When selecting a platform in the TUI, the following structure is generated:
 
 ```
-projeto/
+project/
 ├── .{platform}/
-│   ├── modes.yaml              # Primary Agents como Modes/Agents
-│   ├── agents/                 # Subagents
+│   ├── modes.yaml                # Primary Agents as Modes/Agents
+│   ├── agents/                   # Subagents
 │   │   ├── code-reviewer.md
 │   │   ├── test-writer.md
 │   │   └── ...
-│   ├── rules/                  # Rules compartilhadas
+│   ├── rules/                    # Shared rules
 │   │   └── collaboration.md
-│   └── rules-{mode}/           # Rules específicas por mode
+│   └── rules-{mode}/             # Mode-specific rules
 │
 ├── .{platform}code/
-│   ├── skills/                 # Skills genéricos
-│   └── skills-{mode}/          # Skills por mode
+│   ├── skills/                   # Generic skills
+│   └── skills-{mode}/            # Mode-specific skills
 │
-└── {platform}.json             # Configurações (permissions, models)
+└── {platform}.json               # Settings (permissions, models)
 ```
 
-### Exemplo: Agente Gerado
+### Example: Generated Agent
+
+<details>
+<summary>Primary Agent (Mode)</summary>
 
 ```yaml
-# Primary Agent (Mode)
 - slug: software-engineer
   name: Software Engineer
   description: Expert-level implementation, testing, and code quality
@@ -221,8 +418,12 @@ projeto/
     and refactoring tasks.
 ```
 
+</details>
+
+<details>
+<summary>Subagent</summary>
+
 ```markdown
-# Subagent
 ---
 description: Reviews code for quality, security, and best practices
 mode: subagent
@@ -243,36 +444,50 @@ and suggesting improvements without making direct changes.
 - Code quality and maintainability
 ```
 
-## Instalação
+</details>
+
+---
+
+## Getting Started
+
+### Prerequisites
+
+| Requirement | Version |
+|-------------|---------|
+| Python | 3.11+ |
+| Textual | >=0.47.0 |
+| Rich | >=13.0.0 |
+| PyYAML | >=6.0 |
+| python-frontmatter | >=1.0 |
+
+### Installation
 
 ```bash
-# Clone o repositório
+# Clone the repository
 git clone https://github.com/your-org/RiseOn.Agents.git
 cd RiseOn.Agents
 
-# Instale as dependências
-npm install
+# Install dependencies
+pip install -e .
 
-# Execute
-npm start
+# Run the TUI
+riseon-agents
 ```
 
-## Uso
-
-### Terminal User Interface (TUI)
+### Usage — Terminal User Interface (TUI)
 
 ```bash
 riseon-agents
 ```
 
-O comando abre uma interface TUI moderna e interativa onde você pode:
+The command opens a modern, interactive TUI where you can:
 
-- **Navegar** pela hierarquia completa de agentes
-- **Selecionar** quais agentes incluir na geração
-- **Escolher** a plataforma de destino
-- **Visualizar** preview das configurações antes de gerar
-- **Configurar** opções específicas de cada plataforma
-- **Validar** compatibilidade e detectar problemas
+- **Browse** the full agent hierarchy
+- **Select** which agents to include in generation
+- **Choose** the target platform
+- **Preview** configurations before generating
+- **Configure** platform-specific options
+- **Validate** compatibility and detect issues
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
@@ -296,11 +511,13 @@ O comando abre uma interface TUI moderna e interativa onde você pode:
 └─────────────────────────────────────────────────────────────┘
 ```
 
-## Estrutura do Projeto
+---
+
+## Project Structure
 
 ```
 RiseOn.Agents/
-├── agents/                   # Definições canônicas dos agentes
+├── agents/                     # Canonical agent definitions
 │   ├── architect/
 │   │   ├── architect.agent.md
 │   │   ├── rules/
@@ -310,27 +527,30 @@ RiseOn.Agents/
 │   ├── devops-engineer/
 │   ├── product-manager/
 │   └── product-owner/
-├── src/                      # Código fonte
-│   ├── tui/                  # Interface TUI
-│   ├── generators/           # Geradores por plataforma
+├── src/                        # Source code
+│   ├── tui/                    # TUI interface
+│   ├── generators/             # Platform-specific generators
 │   │   ├── kilo/
 │   │   ├── opencode/
 │   │   ├── github/
 │   │   └── windsurf/
-│   ├── parsers/              # Parsers de definições
-│   └── analyzers/            # Análise de contexto
-├── .specify/                 # Spec-driven development
+│   ├── parsers/                # Definition parsers
+│   └── analyzers/              # Context analysis
+├── tests/                      # Test suite
+├── .specify/                   # Spec-driven development
 │   └── memory/
 │       └── constitution.md
 └── docs/
 ```
 
-## Documentação de Referência
+---
 
-### Plataformas
+## Reference Documentation
 
-| Plataforma | Documentação |
-|------------|--------------|
+### Platforms
+
+| Platform | Documentation |
+|----------|---------------|
 | Kilo Code | [kilo.ai/docs/customize](https://kilo.ai/docs/customize) |
 | OpenCode | [opencode.ai/docs](https://opencode.ai/docs) |
 | GitHub Copilot | [docs.github.com/copilot](https://docs.github.com/copilot) |
@@ -338,33 +558,51 @@ RiseOn.Agents/
 
 ### Standards
 
-- [AgentSkills.io](https://agentskills.io/) - Agent Skills Specification
-- [AGENTS.md Standard](https://agents.md) - Universal Agent Configuration
+- [AgentSkills.io](https://agentskills.io/) — Agent Skills Specification
+- [AGENTS.md Standard](https://agents.md) — Universal Agent Configuration
 
-## Princípios de Desenvolvimento
+---
 
-Este projeto segue a constituição definida em `.specify/memory/constitution.md`:
+## Development Principles
 
-1. **Documentation-First**: Configurações baseadas em documentação oficial
-2. **Modern TUI Design**: Interface moderna, intuitiva e visualmente atraente
-3. **Phase-Based Validation**: Validação do usuário em cada fase
-4. **Test-First Development**: TDD obrigatório
-5. **Agent Modularity**: Agentes independentes e reutilizáveis
-6. **Observability**: Operações rastreáveis e auditáveis
-7. **Simplicity**: Começar simples, adicionar complexidade quando justificado
+This project follows the constitution defined in `.specify/memory/constitution.md`:
 
-## Contribuindo
+| # | Principle | Description |
+|---|-----------|-------------|
+| 1 | **Documentation-First** | Configurations based on official documentation |
+| 2 | **Modern TUI Design** | Modern, intuitive, and visually appealing interface |
+| 3 | **Phase-Based Validation** | User validation at every phase |
+| 4 | **Test-First Development** | Mandatory TDD |
+| 5 | **Agent Modularity** | Independent and reusable agents |
+| 6 | **Observability** | Traceable and auditable operations |
+| 7 | **Simplicity** | Start simple, add complexity when justified |
 
-1. Fork o repositório
-2. Crie uma branch para sua feature (`git checkout -b feature/nova-funcionalidade`)
-3. Siga os princípios da constituição
-4. Inclua testes para novas funcionalidades
-5. Abra um Pull Request
+---
 
-## Licença
+## Contributing
+
+Contributions are welcome! Here's how to get started:
+
+1. **Fork** the repository
+2. **Create a branch** for your feature (`git checkout -b feature/my-feature`)
+3. **Follow** the constitution principles
+4. **Include tests** for new features
+5. **Open a Pull Request**
+
+---
+
+## License
 
 [MIT License](LICENSE)
 
 ---
 
-**Status**: Em desenvolvimento ativo
+<div align="center">
+
+**Status**: Active Development
+
+<br><br>
+
+Made with care for the AI Coding community
+
+</div>
