@@ -11,6 +11,7 @@ from textual.app import App
 from riseon_agents.parsing.repository import AgentRepository
 from riseon_agents.screens.dialogs import EmptyAgentsDialog
 from riseon_agents.screens.main import MainScreen
+from riseon_agents.widgets.help_overlay import HelpOverlay
 
 
 class KiloGeneratorApp(App):
@@ -126,6 +127,5 @@ class KiloGeneratorApp(App):
         self.exit()
 
     def action_help(self) -> None:
-        """Show help overlay."""
-        # Placeholder for T084
-        pass
+        """T084: Show help overlay with keyboard shortcuts."""
+        self.push_screen(HelpOverlay())

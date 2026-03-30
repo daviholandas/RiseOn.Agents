@@ -187,16 +187,16 @@
 
 ### Tests for User Story 3
 
-- [ ] T060 [P] [US3] Test preview content generation in tests/test_widgets/test_preview.py
-- [ ] T061 [P] [US3] Test preview update on tree navigation in tests/test_widgets/test_preview.py
+- [X] T060 [P] [US3] Test preview content generation in tests/test_widgets/test_preview.py
+- [X] T061 [P] [US3] Test preview update on tree navigation in tests/test_widgets/test_preview.py
 
 ### Implementation for User Story 3
 
-- [ ] T062 [US3] Create PreviewPanel widget with syntax highlighting in src/riseon_agents/widgets/preview.py
-- [ ] T063 [US3] Implement preview content generation for each node type in src/riseon_agents/widgets/preview.py
-- [ ] T064 [US3] Add preview panel to MainScreen layout (right side, 60%) in src/riseon_agents/screens/main.py
-- [ ] T065 [US3] Wire tree focus events to preview updates in src/riseon_agents/screens/main.py
-- [ ] T066 [US3] Add Tab navigation between tree and preview panels in src/riseon_agents/screens/main.py
+- [X] T062 [US3] Create PreviewPanel widget with syntax highlighting in src/riseon_agents/widgets/preview.py
+- [X] T063 [US3] Implement preview content generation for each node type in src/riseon_agents/widgets/preview.py
+- [X] T064 [US3] Add preview panel to MainScreen layout (right side, 60%) in src/riseon_agents/screens/main.py
+- [X] T065 [US3] Wire tree focus events to preview updates in src/riseon_agents/screens/main.py
+- [X] T066 [US3] Add Tab navigation between tree and preview panels in src/riseon_agents/screens/main.py
 
 **Checkpoint**: User Story 3 complete. Preview panel shows real-time configuration.
 
@@ -216,15 +216,15 @@
 
 ### Tests for User Story 4
 
-- [ ] T068 [P] [US4] Test GenerationTarget path resolution in tests/test_models/test_generation.py
-- [ ] T069 [P] [US4] Test Local vs Global path differences in tests/test_generation/test_generator.py
+- [X] T068 [P] [US4] Test GenerationTarget path resolution in tests/test_models/test_generation.py
+- [X] T069 [P] [US4] Test Local vs Global path differences in tests/test_generation/test_generator.py
 
 ### Implementation for User Story 4
 
-- [ ] T070 [US4] Add generation level toggle widget (l key) in src/riseon_agents/screens/main.py
-- [ ] T071 [US4] Implement target path display based on level in src/riseon_agents/screens/main.py
-- [ ] T072 [US4] Wire level toggle to preview path updates in src/riseon_agents/screens/main.py
-- [ ] T073 [US4] Update KiloCodeGenerator to use GenerationTarget in src/riseon_agents/generation/generator.py
+- [X] T070 [US4] Add generation level toggle widget (l key) in src/riseon_agents/screens/main.py
+- [X] T071 [US4] Implement target path display based on level in src/riseon_agents/screens/main.py
+- [X] T072 [US4] Wire level toggle to preview path updates in src/riseon_agents/screens/main.py
+- [X] T073 [US4] Update KiloCodeGenerator to use GenerationTarget in src/riseon_agents/generation/generator.py
 
 **Checkpoint**: User Story 4 complete. Local and Global generation targets work.
 
@@ -243,15 +243,15 @@
 
 ### Tests for User Story 6
 
-- [ ] T074 [P] [US6] Test YAML validation in tests/test_generation/test_generator.py
-- [ ] T075 [P] [US6] Test Markdown structure validation in tests/test_generation/test_generator.py
+- [X] T074 [P] [US6] Test YAML validation in tests/test_generation/test_generator.py
+- [X] T075 [P] [US6] Test Markdown structure validation in tests/test_generation/test_generator.py
 
 ### Implementation for User Story 6
 
-- [ ] T076 [US6] Implement YAML syntax validation in src/riseon_agents/generation/generator.py
-- [ ] T077 [US6] Implement Markdown structure validation in src/riseon_agents/generation/generator.py
-- [ ] T078 [US6] Add validation results to generation summary in src/riseon_agents/screens/dialogs.py
-- [ ] T079 [US6] Show validation errors with file and line info in ResultDialog
+- [X] T076 [US6] Implement YAML syntax validation in src/riseon_agents/generation/generator.py
+- [X] T077 [US6] Implement Markdown structure validation in src/riseon_agents/generation/generator.py
+- [X] T078 [US6] Add validation results to generation summary in src/riseon_agents/screens/dialogs.py
+- [X] T079 [US6] Show validation errors with file and line info in ResultDialog
 
 **Checkpoint**: User Story 6 complete. Validation catches format errors.
 
@@ -263,29 +263,29 @@
 
 ### Edge Cases (from spec.md)
 
-- [ ] T080 [P] Handle empty agents/ folder with clear guidance in src/riseon_agents/app.py
-- [ ] T081 [P] Handle write permission errors with suggested resolution in src/riseon_agents/generation/generator.py
-- [ ] T082 [P] Handle generation interruption (Ctrl+C) with cleanup (delete incomplete files, preserve completed) in src/riseon_agents/generation/generator.py
-- [ ] T083 [P] Create Global config directory automatically with confirmation in src/riseon_agents/generation/generator.py
+- [X] T080 [P] Handle empty agents/ folder with clear guidance in src/riseon_agents/app.py
+- [X] T081 [P] Handle write permission errors with suggested resolution in src/riseon_agents/generation/generator.py
+- [X] T082 [P] Handle generation interruption (Ctrl+C) with cleanup (delete incomplete files, preserve completed) in src/riseon_agents/generation/generator.py
+- [X] T083 [P] Create Global config directory automatically with confirmation in src/riseon_agents/generation/generator.py
 
 ### Help System (from tui-interactions.md)
 
-- [ ] T084 Implement help overlay (? key) with keyboard shortcuts in src/riseon_agents/screens/main.py
+- [X] T084 Implement help overlay (? key) with keyboard shortcuts in src/riseon_agents/screens/main.py
 
 ### Error Handling
 
-- [ ] T085 [P] Implement ErrorDialog for permission/disk errors in src/riseon_agents/screens/dialogs.py
+- [X] T085 [P] Implement ErrorDialog for permission/disk errors in src/riseon_agents/screens/dialogs.py
 
 ### Performance (from SC-001, SC-004, SC-005)
 
-- [ ] T087 Verify tree load <2s for 5 Primary + 26 Subagents
-- [ ] T088 Verify preview update <500ms
-- [ ] T089 Verify full generation <10s
+- [X] T087 Verify tree load <2s for 5 Primary + 26 Subagents
+- [X] T088 Verify preview update <500ms
+- [X] T089 Verify full generation <10s
 
 ### Documentation
 
-- [ ] T090 Run quickstart.md validation scenarios
-- [ ] T091 Update AGENTS.md with final command references
+- [X] T090 Run quickstart.md validation scenarios
+- [X] T091 Update AGENTS.md with final command references
 
 ---
 

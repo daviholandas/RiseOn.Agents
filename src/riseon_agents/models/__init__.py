@@ -11,6 +11,9 @@ from riseon_agents.models.generation import (
     GenerationLevel,
     GenerationResult,
     GenerationTarget,
+    ValidationError,
+    ValidationResult,
+    ValidationStatus,
 )
 from riseon_agents.models.rule import Rule
 from riseon_agents.models.selection import SelectableNode, SelectionState
@@ -34,4 +37,8 @@ __all__ = [
     "FileStatus",
     "GeneratedFile",
     "GenerationResult",
+    # Validation models
+    "ValidationStatus",
+    "ValidationError",
+    "ValidationResult",
 ]

@@ -7,6 +7,82 @@ target paths, file status tracking, and generation results.
 from dataclasses import dataclass, field
 from enum import Enum
 from pathlib import Path
+from typing import Any
+
+
+class ValidationStatus(Enum):
+    """Status of a validation check."""
+
+    PASS = "pass"
+    FAIL = "fail"
+    WARNING = "warning"
+
+
+@dataclass
+class ValidationError:
+    """A single validation error with location information.
+
+    Attributes:
+        file_path: Path to the file that failed validation
+        line_number: Line number where the error occurred (1-indexed, None if not applicable)
+        column: Column number where the error occurred (None if not applicable)
+        message: Human-readable error message
+        error_type: Type of error (e.g., "yaml_syntax", "markdown_structure")
+    """
+
+    file_path: Path
+    message: str
+    line_number: int | None = None
+    column: int | None = None
+    error_type: str = ""
+
+    def __str__(self) -> str:
+        """String representation with location info."""
+        location = str(self.file_path)
+        if self.line_number is not None:
+            location += f":{self.line_number}"
+            if self.column is not None:
+                location += f":{self.column}"
+        return f"{location}: {self.message}"
+
+
+@dataclass
+class ValidationResult:
+    """Complete result of validation for a single file.
+
+    Attributes:
+        file_path: Path to the validated file
+        status: PASS, FAIL, or WARNING
+        errors: List of validation errors found
+    """
+
+    file_path: Path
+    status: ValidationStatus = ValidationStatus.PASS
+    errors: list[ValidationError] = field(default_factory=list)
+
+    def add_error(
+        self,
+        message: str,
+        line_number: int | None = None,
+        column: int | None = None,
+        error_type: str = "",
+    ) -> None:
+        """Add a validation error to this result."""
+        error = ValidationError(
+            file_path=self.file_path,
+            message=message,
+            line_number=line_number,
+            column=column,
+            error_type=error_type,
+        )
+        self.errors.append(error)
+        # Update status to FAIL if we have any errors
+        self.status = ValidationStatus.FAIL
+
+    @property
+    def is_valid(self) -> bool:
+        """Check if the file passed validation."""
+        return self.status == ValidationStatus.PASS and len(self.errors) == 0
 
 
 class GenerationLevel(Enum):
@@ -118,6 +194,7 @@ class GenerationResult:
     files: list[GeneratedFile] = field(default_factory=list)
     target: GenerationTarget | None = None
     interrupted: bool = False
+    validation_results: list[ValidationResult] = field(default_factory=list)
 
     def add_file(
         self,
@@ -135,6 +212,25 @@ class GenerationResult:
         )
         self.files.append(file_result)
         return file_result
+
+    def add_validation_result(self, result: ValidationResult) -> None:
+        """Add a validation result to the generation."""
+        self.validation_results.append(result)
+
+    @property
+    def validation_passed(self) -> bool:
+        """Check if all validations passed."""
+        if not self.validation_results:
+            return True  # No validation run = pass by default
+        return all(r.is_valid for r in self.validation_results)
+
+    @property
+    def validation_errors(self) -> list[ValidationError]:
+        """Get all validation errors from all results."""
+        errors = []
+        for result in self.validation_results:
+            errors.extend(result.errors)
+        return errors
 
     @property
     def created_count(self) -> int:
@@ -196,5 +292,14 @@ class GenerationResult:
             level_str = "Local" if self.target.level == GenerationLevel.LOCAL else "Global"
             lines.append("")
             lines.append(f"Target: {level_str} ({self.target.base_path})")
+
+        # Add validation section if validation was run
+        if self.validation_results:
+            lines.append("")
+            if self.validation_passed:
+                lines.append("Validation: All files passed validation ✓")
+            else:
+                lines.append("Validation: Some files failed validation ✗")
+                lines.append(f"  {len(self.validation_errors)} error(s) found")
 
         return "\n".join(lines)

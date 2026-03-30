@@ -16,6 +16,8 @@ from textual.widgets import Footer, Header, ProgressBar, Static
 from riseon_agents.generation.generator import KiloCodeGenerator
 from riseon_agents.models.generation import GenerationLevel
 from riseon_agents.widgets.agent_tree import AgentTree
+from riseon_agents.widgets.help_overlay import HelpOverlay
+from riseon_agents.widgets.preview import PreviewPanel
 
 
 class MainScreen(Screen):
@@ -64,7 +66,9 @@ class MainScreen(Screen):
     BINDINGS = [
         ("q", "quit", "Quit"),
         ("g", "generate", "Generate"),
+        ("l", "toggle_level", "Toggle Level"),
         ("?", "help", "Help"),
+        ("tab", "focus_next", "Next Panel"),
     ]
 
     selected_count = reactive(0)
@@ -74,6 +78,7 @@ class MainScreen(Screen):
         """Initialize the main screen."""
         super().__init__()
         self.agent_tree: AgentTree | None = None
+        self.preview_panel: PreviewPanel | None = None
         self.status_bar: Static | None = None
         self.progress_bar: ProgressBar | None = None
         self.generator = KiloCodeGenerator()
@@ -97,9 +102,10 @@ class MainScreen(Screen):
                 self.progress_bar.display = False
                 yield self.progress_bar
 
-            # Preview panel (right side, 60%) - placeholder for US3
+            # Preview panel (right side, 60%) - T064: PreviewPanel for US3
             with Vertical(id="preview-panel"):
-                yield from []
+                self.preview_panel = PreviewPanel()
+                yield self.preview_panel
 
         yield Footer()
 
@@ -110,8 +116,34 @@ class MainScreen(Screen):
             self.agent_tree.focus()
             # Set up callback for selection changes
             self.agent_tree.set_on_selection_changed(self.update_selection_count)
+            # T065: Wire tree focus events to preview updates
+            self.agent_tree.focused_node = None
             # Initial count update
             self.update_selection_count()
+
+    def on_tree_node_highlighted(self, event) -> None:
+        """T065: Update preview when tree node is highlighted (focused).
+
+        Args:
+            event: Tree node highlighted event.
+        """
+        if not self.preview_panel or not self.agent_tree:
+            return
+
+        node = event.node
+        if node is None or node.data is None:
+            self.preview_panel.show_placeholder()
+            return
+
+        # Get node type and data
+        node_type = node.data.node_type if hasattr(node.data, "node_type") else None
+        agent_data = node.data.agent if hasattr(node.data, "agent") else None
+
+        if node_type and agent_data:
+            # T072: Pass generation level to preview
+            self.preview_panel.update_preview(node_type, agent_data, self.generation_level)
+        else:
+            self.preview_panel.show_placeholder()
 
     def watch_selected_count(self, count: int) -> None:
         """T044: Update status bar when selection count changes."""
@@ -137,9 +169,44 @@ class MainScreen(Screen):
             self.selected_count = self.agent_tree.get_selected_count()
 
     def action_help(self) -> None:
-        """Show help overlay."""
-        # Placeholder for T084
-        pass
+        """T084: Show help overlay with keyboard shortcuts."""
+        self.app.push_screen(HelpOverlay())
+
+    def action_toggle_level(self) -> None:
+        """T070: Toggle generation level between Local and Global."""
+        if self.generation_level == GenerationLevel.LOCAL:
+            self.generation_level = GenerationLevel.GLOBAL
+        else:
+            self.generation_level = GenerationLevel.LOCAL
+
+        # T072: Update preview to show new target paths
+        if self.preview_panel:
+            # Refresh the current preview if there's a node selected
+            current_data = self.preview_panel.get_current_data()
+            current_type = self.preview_panel.get_current_node_type()
+            if current_data and current_type:
+                self.preview_panel.update_preview(current_type, current_data, self.generation_level)
+
+    def _get_target_path_display(self) -> str:
+        """T071: Get the display string for current target path."""
+        if self.generation_level == GenerationLevel.LOCAL:
+            return "./.kilo/"
+        else:
+            return "~/.kilocode/"
+        """T066: Toggle focus between tree and preview panels on Tab key."""
+        if self.agent_tree and self.preview_panel:
+            if self.agent_tree.has_focus:
+                self.preview_panel.focus()
+            else:
+                self.agent_tree.focus()
+
+    def action_focus_next(self) -> None:
+        """T066: Toggle focus between tree and preview panels on Tab key."""
+        if self.agent_tree and self.preview_panel:
+            if self.agent_tree.has_focus:
+                self.preview_panel.focus()
+            else:
+                self.agent_tree.focus()
 
     def action_generate(self) -> None:
         """T056: Generate configuration files for selected agents."""
@@ -284,9 +351,15 @@ class MainScreen(Screen):
             summary += f"Files updated: {updated}\n"
             summary += f"Total files: {len(result.files)}"
 
+            # T078, T079: Pass validation errors if any
+            validation_errors = (
+                result.validation_errors if hasattr(result, "validation_errors") else []
+            )
+
             return ResultDialog(
                 title="Generation Complete",
                 summary=summary,
+                validation_errors=validation_errors,
             )
         else:
             return ResultDialog(

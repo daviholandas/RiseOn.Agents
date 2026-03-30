@@ -1,12 +1,17 @@
 """Dialog screens for the TUI.
 
 Implements T033: User Story 1 - Error screens for missing/empty agents folder.
+Implements T078, T079: User Story 6 - Show validation results with file and line info.
 """
+
+from pathlib import Path
 
 from textual.app import ComposeResult
 from textual.containers import Container, Vertical
 from textual.screen import ModalScreen
 from textual.widgets import Button, Label, Static
+
+from riseon_agents.models.generation import GenerationResult, ValidationError
 
 
 class ErrorDialog(ModalScreen):
@@ -176,11 +181,14 @@ class ConfirmDialog(ModalScreen):
 
 
 class ResultDialog(ModalScreen):
-    """Dialog showing generation results.
+    """Dialog showing generation results with validation.
+
+    Implements T078, T079: User Story 6 - Show validation results with file and line info.
 
     Attributes:
         title: Dialog title
         summary: Summary text to display
+        validation_errors: Optional list of validation errors to display
     """
 
     DEFAULT_CSS = """
@@ -189,12 +197,16 @@ class ResultDialog(ModalScreen):
     }
     
     ResultDialog > Container {
-        width: 70;
+        width: 80;
         height: auto;
-        max-height: 30;
+        max-height: 40;
         border: solid $success;
         background: $surface;
         padding: 1 2;
+    }
+    
+    ResultDialog.error > Container {
+        border: solid $error;
     }
     
     ResultDialog > Container > Label {
@@ -204,8 +216,18 @@ class ResultDialog(ModalScreen):
         margin-bottom: 1;
     }
     
-    ResultDialog > Container > Static {
+    ResultDialog.error > Container > Label {
+        color: $error;
+    }
+    
+    ResultDialog > Container > Static.summary {
         margin-bottom: 1;
+    }
+    
+    ResultDialog > Container > Static.errors {
+        color: $error;
+        margin-bottom: 1;
+        max-height: 15;
     }
     
     ResultDialog > Container > Button {
@@ -213,23 +235,67 @@ class ResultDialog(ModalScreen):
     }
     """
 
-    def __init__(self, title: str, summary: str) -> None:
+    def __init__(
+        self,
+        title: str,
+        summary: str,
+        validation_errors: list[ValidationError] | None = None,
+    ) -> None:
         """Initialize the result dialog.
 
         Args:
             title: Dialog title.
             summary: Summary text to display.
+            validation_errors: Optional list of validation errors to display.
         """
         super().__init__()
         self.title = title
         self.summary = summary
+        self.validation_errors = validation_errors or []
 
     def compose(self) -> ComposeResult:
         """Compose the dialog."""
+        # Set error class if there are validation errors
+        if self.validation_errors:
+            self.add_class("error")
+
         with Container():
-            yield Label(f"✓ {self.title}")
-            yield Static(self.summary)
+            # Show checkmark for success, warning for validation errors
+            icon = "⚠" if self.validation_errors else "✓"
+            yield Label(f"{icon} {self.title}")
+            yield Static(self.summary, classes="summary")
+
+            # Show validation errors if present
+            if self.validation_errors:
+                error_text = self._format_validation_errors()
+                yield Static(error_text, classes="errors")
+
             yield Button("OK", id="ok", variant="primary")
+
+    def _format_validation_errors(self) -> str:
+        """Format validation errors for display.
+
+        Returns:
+            Formatted string with error details.
+        """
+        lines = ["Validation Errors:"]
+        lines.append("")
+
+        for i, error in enumerate(self.validation_errors[:10], 1):  # Limit to first 10
+            location = str(error.file_path.name)
+            if error.line_number is not None:
+                location += f":{error.line_number}"
+                if error.column is not None:
+                    location += f":{error.column}"
+
+            lines.append(f"{i}. {location}")
+            lines.append(f"   {error.message}")
+            lines.append("")
+
+        if len(self.validation_errors) > 10:
+            lines.append(f"... and {len(self.validation_errors) - 10} more errors")
+
+        return "\n".join(lines)
 
     def on_button_pressed(self, event: Button.Pressed) -> None:
         """Handle button press."""
