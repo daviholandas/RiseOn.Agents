@@ -1,9 +1,12 @@
-"""Custom Textual widgets for RiseOn.Agents TUI.
+"""Custom Textual widgets for RiseOn.Agents.
 
-This package contains the specialized widgets used in the application:
-- SelectableTree: Tree widget with tri-state selection
-- PreviewPanel: Configuration preview with syntax highlighting
+This package contains custom widgets extending Textual's base widgets
+to provide agent-specific UI components.
 """
 
-# Widgets will be imported here after implementation
-__all__: list[str] = []
+from riseon_agents.widgets.agent_tree import AgentTree, AgentTreeNode
+
+__all__ = [
+    "AgentTree",
+    "AgentTreeNode",
+]

@@ -433,6 +433,18 @@ class AgentRepository:
         """Get all warnings from the last load operation."""
         return self._warnings
 
+    def discover_agents(self) -> list[PrimaryAgent]:
+        """Discover and return all agents from the agents/ folder.
+
+        This is a convenience method that calls discover() and returns
+        just the agents list.
+
+        Returns:
+            List of PrimaryAgent instances.
+        """
+        result = self.discover()
+        return result.agents
+
     def get_agent_by_name(self, name: str) -> PrimaryAgent | None:
         """Find an agent by name.
 

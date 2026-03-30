@@ -85,20 +85,20 @@
 
 ### Tests for User Story 1
 
-- [ ] T024 [P] [US1] Test basic Textual Tree widget in tests/test_widgets/test_agent_tree.py
-- [ ] T025 [P] [US1] Test tree population from AgentRepository in tests/test_widgets/test_agent_tree.py
-- [ ] T026 [P] [US1] Test keyboard navigation (arrows, Enter) in tests/test_widgets/test_agent_tree.py
+- [X] T024 [P] [US1] Test basic Textual Tree widget in tests/test_widgets/test_agent_tree.py
+- [X] T025 [P] [US1] Test tree population from AgentRepository in tests/test_widgets/test_agent_tree.py
+- [X] T026 [P] [US1] Test keyboard navigation (arrows, Enter) in tests/test_widgets/test_agent_tree.py
 
 ### Implementation for User Story 1
 
-- [ ] T027 [US1] Create base SelectableTree widget extending Textual Tree in src/riseon_agents/widgets/agent_tree.py
-- [ ] T028 [US1] Implement tree node building from PrimaryAgent hierarchy in src/riseon_agents/widgets/agent_tree.py
-- [ ] T029 [US1] Add node type icons (from tui-interactions.md: Primary Agent, Subagent, Rule, Skill) in src/riseon_agents/widgets/agent_tree.py
-- [ ] T030 [US1] Implement warning indicator for malformed agents in src/riseon_agents/widgets/agent_tree.py
-- [ ] T031 [US1] Create basic MainScreen with tree panel layout in src/riseon_agents/screens/main.py
-- [ ] T032 [US1] Create KiloGeneratorApp with agent loading on startup in src/riseon_agents/app.py
-- [ ] T033 [US1] Add error screen for missing/empty agents/ folder in src/riseon_agents/screens/dialogs.py
-- [ ] T034 [US1] Wire __main__.py to launch KiloGeneratorApp
+- [X] T027 [US1] Create base SelectableTree widget extending Textual Tree in src/riseon_agents/widgets/agent_tree.py
+- [X] T028 [US1] Implement tree node building from PrimaryAgent hierarchy in src/riseon_agents/widgets/agent_tree.py
+- [X] T029 [US1] Add node type icons (from tui-interactions.md: Primary Agent, Subagent, Rule, Skill) in src/riseon_agents/widgets/agent_tree.py
+- [X] T030 [US1] Implement warning indicator for malformed agents in src/riseon_agents/widgets/agent_tree.py
+- [X] T031 [US1] Create basic MainScreen with tree panel layout in src/riseon_agents/screens/main.py
+- [X] T032 [US1] Create KiloGeneratorApp with agent loading on startup in src/riseon_agents/app.py
+- [X] T033 [US1] Add error screen for missing/empty agents/ folder in src/riseon_agents/screens/dialogs.py
+- [X] T034 [US1] Wire __main__.py to launch KiloGeneratorApp
 
 **Checkpoint**: User Story 1 complete. TUI launches, shows agent hierarchy, keyboard navigation works.
 
@@ -118,19 +118,19 @@
 
 ### Tests for User Story 2
 
-- [ ] T035 [P] [US2] Test SelectionState transitions in tests/test_widgets/test_agent_tree.py
-- [ ] T036 [P] [US2] Test selection propagation (parent to children) in tests/test_widgets/test_agent_tree.py
-- [ ] T037 [P] [US2] Test PARTIAL state calculation in tests/test_widgets/test_agent_tree.py
-- [ ] T038 [P] [US2] Test bulk selection (a/A keys) in tests/test_widgets/test_agent_tree.py
+- [X] T035 [P] [US2] Test SelectionState transitions in tests/test_widgets/test_agent_tree.py
+- [X] T036 [P] [US2] Test selection propagation (parent to children) in tests/test_widgets/test_agent_tree.py
+- [X] T037 [P] [US2] Test PARTIAL state calculation in tests/test_widgets/test_agent_tree.py
+- [X] T038 [P] [US2] Test bulk selection (a/A keys) in tests/test_widgets/test_agent_tree.py
 
 ### Implementation for User Story 2
 
-- [ ] T039 [US2] Implement tri-state toggle on Space key in src/riseon_agents/widgets/agent_tree.py
-- [ ] T040 [US2] Implement selection propagation down (parent to children) in src/riseon_agents/widgets/agent_tree.py
-- [ ] T041 [US2] Implement PARTIAL state calculation up (children to parent) in src/riseon_agents/widgets/agent_tree.py
-- [ ] T042 [US2] Add selection state icons (from tui-interactions.md: selected, unselected, partial) in src/riseon_agents/widgets/agent_tree.py
-- [ ] T043 [US2] Implement bulk selection (a = select all, A = deselect all) in src/riseon_agents/widgets/agent_tree.py
-- [ ] T044 [US2] Add selection count to status bar in src/riseon_agents/screens/main.py
+- [X] T039 [US2] Implement tri-state toggle on Space key in src/riseon_agents/widgets/agent_tree.py
+- [X] T040 [US2] Implement selection propagation down (parent to children) in src/riseon_agents/widgets/agent_tree.py
+- [X] T041 [US2] Implement PARTIAL state calculation up (children to parent) in src/riseon_agents/widgets/agent_tree.py
+- [X] T042 [US2] Add selection state icons (from tui-interactions.md: selected, unselected, partial) in src/riseon_agents/widgets/agent_tree.py
+- [X] T043 [US2] Implement bulk selection (a = select all, A = deselect all) in src/riseon_agents/widgets/agent_tree.py
+- [X] T044 [US2] Add selection count to status bar in src/riseon_agents/screens/main.py
 
 **Checkpoint**: User Story 2 complete. Selection works with tri-state, propagation, and bulk operations.
 
@@ -150,24 +150,24 @@
 
 ### Tests for User Story 5
 
-- [ ] T045 [P] [US5] Test custom_modes.yaml generation in tests/test_generation/test_modes.py
-- [ ] T046 [P] [US5] Test subagent .md generation in tests/test_generation/test_subagents.py
-- [ ] T047 [P] [US5] Test rules generation in tests/test_generation/test_rules.py
-- [ ] T048 [P] [US5] Test skills generation in tests/test_generation/test_skills.py
-- [ ] T049 [P] [US5] Test KiloCodeGenerator orchestrator in tests/test_generation/test_generator.py
+- [X] T045 [P] [US5] Test custom_modes.yaml generation in tests/test_generation/test_modes.py
+- [X] T046 [P] [US5] Test subagent .md generation in tests/test_generation/test_subagents.py
+- [X] T047 [P] [US5] Test rules generation in tests/test_generation/test_rules.py
+- [X] T048 [P] [US5] Test skills generation in tests/test_generation/test_skills.py
+- [X] T049 [P] [US5] Test KiloCodeGenerator orchestrator in tests/test_generation/test_generator.py
 
 ### Implementation for User Story 5
 
-- [ ] T050 [P] [US5] Implement custom_modes.yaml generator (per generator-output.md) in src/riseon_agents/generation/modes.py
-- [ ] T051 [P] [US5] Implement subagent .md generator (per generator-output.md) in src/riseon_agents/generation/subagents.py
-- [ ] T052 [P] [US5] Implement rules generator (shared + mode-specific) in src/riseon_agents/generation/rules.py
-- [ ] T053 [P] [US5] Implement skills generator (SKILL.md + subdirs) in src/riseon_agents/generation/skills.py
-- [ ] T054 [US5] Create KiloCodeGenerator orchestrator in src/riseon_agents/generation/generator.py
-- [ ] T055 [US5] Create generation package __init__.py with exports in src/riseon_agents/generation/__init__.py
-- [ ] T056 [US5] Implement generate action (g key) in MainScreen in src/riseon_agents/screens/main.py
-- [ ] T057 [US5] Add generation progress indicator widget in src/riseon_agents/screens/main.py
-- [ ] T058 [US5] Implement ResultDialog for generation summary in src/riseon_agents/screens/dialogs.py
-- [ ] T059 [US5] Implement ConfirmDialog for overwrite confirmation in src/riseon_agents/screens/dialogs.py
+- [X] T050 [P] [US5] Implement custom_modes.yaml generator (per generator-output.md) in src/riseon_agents/generation/modes.py
+- [X] T051 [P] [US5] Implement subagent .md generator (per generator-output.md) in src/riseon_agents/generation/subagents.py
+- [X] T052 [P] [US5] Implement rules generator (shared + mode-specific) in src/riseon_agents/generation/rules.py
+- [X] T053 [P] [US5] Implement skills generator (SKILL.md + subdirs) in src/riseon_agents/generation/skills.py
+- [X] T054 [US5] Create KiloCodeGenerator orchestrator in src/riseon_agents/generation/generator.py
+- [X] T055 [US5] Create generation package __init__.py with exports in src/riseon_agents/generation/__init__.py
+- [X] T056 [US5] Implement generate action (g key) in MainScreen in src/riseon_agents/screens/main.py
+- [X] T057 [US5] Add generation progress indicator widget in src/riseon_agents/screens/main.py
+- [X] T058 [US5] Implement ResultDialog for generation summary in src/riseon_agents/screens/dialogs.py
+- [X] T059 [US5] Implement ConfirmDialog for overwrite confirmation in src/riseon_agents/screens/dialogs.py
 
 **Checkpoint**: User Story 5 complete. MVP COMPLETE - can view agents, select, and generate Local configurations.
 

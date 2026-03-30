@@ -1,9 +1,20 @@
-"""Textual screens for RiseOn.Agents TUI.
+"""Textual screens for RiseOn.Agents.
 
-This package contains the application screens:
-- MainScreen: Primary interface with tree and preview
-- Dialogs: Confirmation, error, and result dialogs
+This package contains screen definitions for the TUI application.
 """
 
-# Screens will be imported here after implementation
-__all__: list[str] = []
+from riseon_agents.screens.dialogs import (
+    ConfirmDialog,
+    EmptyAgentsDialog,
+    ErrorDialog,
+    ResultDialog,
+)
+from riseon_agents.screens.main import MainScreen
+
+__all__ = [
+    "MainScreen",
+    "ErrorDialog",
+    "EmptyAgentsDialog",
+    "ConfirmDialog",
+    "ResultDialog",
+]
