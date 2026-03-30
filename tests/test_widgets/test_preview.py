@@ -4,7 +4,6 @@ Implements T060-T061: User Story 3 - Preview Generated Configuration.
 """
 
 import pytest
-from textual.widgets import Static
 
 from riseon_agents.models.agent import PermissionLevel, PrimaryAgent, Subagent
 from riseon_agents.models.rule import Rule

@@ -4,14 +4,13 @@ Implements T033: User Story 1 - Error screens for missing/empty agents folder.
 Implements T078, T079: User Story 6 - Show validation results with file and line info.
 """
 
-from pathlib import Path
 
 from textual.app import ComposeResult
 from textual.containers import Container, Vertical
 from textual.screen import ModalScreen
 from textual.widgets import Button, Label, Static
 
-from riseon_agents.models.generation import GenerationResult, ValidationError
+from riseon_agents.models.generation import ValidationError
 
 
 class ErrorDialog(ModalScreen):

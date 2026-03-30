@@ -3,7 +3,6 @@
 Implements T032: User Story 1 - Create KiloGeneratorApp.
 """
 
-import os
 from pathlib import Path
 
 from textual.app import App

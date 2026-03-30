@@ -346,7 +346,7 @@ class MainScreen(Screen):
             created = len([f for f in result.files if f.status.value == 1])  # CREATED
             updated = len([f for f in result.files if f.status.value == 2])  # UPDATED
 
-            summary = f"Generation completed successfully!\n\n"
+            summary = "Generation completed successfully!\n\n"
             summary += f"Files created: {created}\n"
             summary += f"Files updated: {updated}\n"
             summary += f"Total files: {len(result.files)}"

@@ -7,7 +7,7 @@ from datetime import datetime
 from pathlib import Path
 
 from riseon_agents.models.agent import PermissionLevel, PrimaryAgent
-from riseon_agents.models.generation import FileStatus, GeneratedFile, GenerationResult
+from riseon_agents.models.generation import FileStatus, GenerationResult
 
 
 class ModesGenerator:

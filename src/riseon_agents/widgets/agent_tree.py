@@ -4,13 +4,12 @@ Implements T027-T030: User Story 1 - View Agent Hierarchy.
 """
 
 from dataclasses import dataclass, field
-from typing import Any, Optional
+from typing import Any
 
-from textual.reactive import reactive
 from textual.widgets import Tree
 from textual.widgets.tree import TreeNode
 
-from riseon_agents.models.agent import PermissionLevel, PrimaryAgent, Subagent
+from riseon_agents.models.agent import PrimaryAgent, Subagent
 from riseon_agents.models.rule import Rule
 from riseon_agents.models.selection import SelectionState
 from riseon_agents.models.skill import Skill
@@ -34,7 +33,7 @@ class AgentTreeNode:
     label: str
     node_type: str  # primary_agent, subagent, rule, skill
     state: SelectionState = field(default=SelectionState.UNSELECTED)
-    agent: Optional[Any] = None
+    agent: Any | None = None
     has_warning: bool = False
     warnings: list[str] = field(default_factory=list)
 
@@ -118,7 +117,7 @@ class AgentTree(Tree):
         """Initialize the agent tree."""
         super().__init__("Agents", *args, **kwargs)
         self.root.expand()
-        self._on_selection_changed: Optional[callable] = None
+        self._on_selection_changed: callable | None = None
 
     def set_on_selection_changed(self, callback: callable) -> None:
         """Set callback for when selection changes.
@@ -355,7 +354,7 @@ class AgentTree(Tree):
         # Continue up the tree
         self._update_parent_state_recursive(parent)
 
-    def _find_parent_node(self, node: TreeNode) -> Optional[TreeNode]:
+    def _find_parent_node(self, node: TreeNode) -> TreeNode | None:
         """Find the parent of a given node.
 
         Args:
@@ -367,7 +366,7 @@ class AgentTree(Tree):
         # Search from root to find parent
         return self._find_parent_recursive(self.root, node)
 
-    def _find_parent_recursive(self, current: TreeNode, target: TreeNode) -> Optional[TreeNode]:
+    def _find_parent_recursive(self, current: TreeNode, target: TreeNode) -> TreeNode | None:
         """Recursively search for parent of target node.
 
         Args:

@@ -6,7 +6,7 @@ Implements T053: User Story 5 - Generate skill files.
 from datetime import datetime
 from pathlib import Path
 
-from riseon_agents.models.generation import FileStatus, GeneratedFile, GenerationResult
+from riseon_agents.models.generation import FileStatus, GenerationResult
 from riseon_agents.models.skill import Skill
 
 

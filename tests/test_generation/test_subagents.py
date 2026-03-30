@@ -3,12 +3,10 @@
 Covers T046: User Story 5 - Generate subagent .md files.
 """
 
-from pathlib import Path
 
-import pytest
 
-from riseon_agents.models.agent import PermissionLevel, PrimaryAgent, Subagent
 from riseon_agents.generation.subagents import SubagentsGenerator
+from riseon_agents.models.agent import PermissionLevel, Subagent
 
 
 class TestSubagentsGenerator:

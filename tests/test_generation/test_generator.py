@@ -7,9 +7,8 @@ Covers T074, T075: User Story 6 - Test YAML and Markdown validation.
 from pathlib import Path
 from unittest.mock import MagicMock, patch
 
-import pytest
-
-from riseon_agents.models.agent import PermissionLevel, PrimaryAgent, Subagent
+from riseon_agents.generation.generator import KiloCodeGenerator
+from riseon_agents.models.agent import PrimaryAgent, Subagent
 from riseon_agents.models.generation import (
     FileStatus,
     GenerationLevel,
@@ -18,7 +17,6 @@ from riseon_agents.models.generation import (
 )
 from riseon_agents.models.rule import Rule
 from riseon_agents.models.skill import Skill
-from riseon_agents.generation.generator import KiloCodeGenerator
 
 
 class TestKiloCodeGenerator:

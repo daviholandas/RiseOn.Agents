@@ -1,9 +1,9 @@
 """Shared pytest fixtures for RiseOn.Agents tests."""
 
-from pathlib import Path
-from typing import Generator
-import tempfile
 import shutil
+import tempfile
+from collections.abc import Generator
+from pathlib import Path
 
 import pytest
 

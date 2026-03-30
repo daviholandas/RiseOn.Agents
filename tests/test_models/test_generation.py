@@ -2,8 +2,6 @@
 
 from pathlib import Path
 
-import pytest
-
 from riseon_agents.models.generation import (
     FileStatus,
     GeneratedFile,

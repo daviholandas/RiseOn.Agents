@@ -14,7 +14,6 @@ from riseon_agents.models.rule import Rule
 from riseon_agents.models.skill import Skill
 from riseon_agents.parsing.frontmatter import FrontmatterParser, ParsedDocument
 
-
 logger = logging.getLogger(__name__)
 
 

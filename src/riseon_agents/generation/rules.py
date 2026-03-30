@@ -5,7 +5,7 @@ Implements T052: User Story 5 - Generate rule files.
 
 from pathlib import Path
 
-from riseon_agents.models.generation import FileStatus, GeneratedFile, GenerationResult
+from riseon_agents.models.generation import FileStatus, GenerationResult
 from riseon_agents.models.rule import Rule
 
 

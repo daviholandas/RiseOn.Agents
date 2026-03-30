@@ -4,12 +4,11 @@ Covers T024-T026: User Story 1 - View Agent Hierarchy tests.
 Covers T035-T038: User Story 2 - Select Agents tests.
 """
 
-from unittest.mock import MagicMock, patch
+from unittest.mock import patch
 
-import pytest
 from textual.widgets import Tree
 
-from riseon_agents.models.agent import PermissionLevel, PrimaryAgent, Subagent
+from riseon_agents.models.agent import PrimaryAgent, Subagent
 from riseon_agents.models.rule import Rule
 from riseon_agents.models.selection import SelectionState
 from riseon_agents.models.skill import Skill

@@ -7,7 +7,6 @@ target paths, file status tracking, and generation results.
 from dataclasses import dataclass, field
 from enum import Enum
 from pathlib import Path
-from typing import Any
 
 
 class ValidationStatus(Enum):

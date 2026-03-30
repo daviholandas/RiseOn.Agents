@@ -3,7 +3,7 @@
 Implements T062-T063: User Story 3 - Preview Generated Configuration.
 """
 
-from typing import Any, Optional
+from typing import Any
 
 from rich.syntax import Syntax
 from rich.text import Text
@@ -49,9 +49,9 @@ class PreviewPanel(Vertical):
     def __init__(self, *args, **kwargs) -> None:
         """Initialize the preview panel."""
         super().__init__(*args, **kwargs)
-        self.content_widget: Optional[Static] = None
-        self._current_node_type: Optional[str] = None
-        self._current_data: Optional[Any] = None
+        self.content_widget: Static | None = None
+        self._current_node_type: str | None = None
+        self._current_data: Any | None = None
 
     def compose(self):
         """Compose the preview panel layout."""
@@ -298,7 +298,7 @@ class PreviewPanel(Vertical):
 
         return groups
 
-    def get_current_node_type(self) -> Optional[str]:
+    def get_current_node_type(self) -> str | None:
         """Get the current node type being previewed.
 
         Returns:
@@ -306,7 +306,7 @@ class PreviewPanel(Vertical):
         """
         return self._current_node_type
 
-    def get_current_data(self) -> Optional[Any]:
+    def get_current_data(self) -> Any | None:
         """Get the current data being previewed.
 
         Returns:

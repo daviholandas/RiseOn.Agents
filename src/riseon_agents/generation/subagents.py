@@ -5,8 +5,8 @@ Implements T051: User Story 5 - Generate subagent .md files.
 
 from pathlib import Path
 
-from riseon_agents.models.agent import PermissionLevel, Subagent
-from riseon_agents.models.generation import FileStatus, GeneratedFile, GenerationResult
+from riseon_agents.models.agent import Subagent
+from riseon_agents.models.generation import FileStatus, GenerationResult
 
 
 class SubagentsGenerator:

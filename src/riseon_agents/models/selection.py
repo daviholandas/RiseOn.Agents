@@ -8,9 +8,7 @@ from enum import Enum, auto
 from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
-    from riseon_agents.models.agent import PrimaryAgent, Subagent
-    from riseon_agents.models.rule import Rule
-    from riseon_agents.models.skill import Skill
+    pass
 
 
 class SelectionState(Enum):

@@ -2,8 +2,6 @@
 
 from pathlib import Path
 
-import pytest
-
 from riseon_agents.models.agent import PermissionLevel
 from riseon_agents.parsing.repository import AgentRepository
 
@@ -39,8 +37,8 @@ class TestAgentRepository:
         assert "read" in agent.tools
         assert agent.temperature == 0.1
         assert agent.steps == 40
-        assert PermissionLevel.ALLOW == agent.permissions.get("edit")
-        assert PermissionLevel.DENY == agent.permissions.get("bash")
+        assert agent.permissions.get("edit") == PermissionLevel.ALLOW
+        assert agent.permissions.get("bash") == PermissionLevel.DENY
 
     def test_load_subagents(self, agents_fixtures_dir: Path) -> None:
         """Test loading subagents for a primary agent."""

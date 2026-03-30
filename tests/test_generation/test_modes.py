@@ -3,12 +3,11 @@
 Covers T045: User Story 5 - Generate custom_modes.yaml.
 """
 
-from pathlib import Path
 
 import pytest
 
-from riseon_agents.models.agent import PermissionLevel, PrimaryAgent
 from riseon_agents.generation.modes import ModesGenerator
+from riseon_agents.models.agent import PermissionLevel, PrimaryAgent
 
 
 class TestModesGenerator:

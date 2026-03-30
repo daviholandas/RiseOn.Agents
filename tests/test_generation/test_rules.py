@@ -3,12 +3,10 @@
 Covers T047: User Story 5 - Generate rule files.
 """
 
-from pathlib import Path
 
-import pytest
 
-from riseon_agents.models.rule import Rule
 from riseon_agents.generation.rules import RulesGenerator
+from riseon_agents.models.rule import Rule
 
 
 class TestRulesGenerator:
