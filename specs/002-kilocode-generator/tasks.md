@@ -24,12 +24,12 @@
 
 **Purpose**: Project initialization and basic structure
 
-- [ ] T001 Create project structure per plan.md (`src/riseon_agents/`, `tests/`)
-- [ ] T002 Initialize Python project with pyproject.toml (Textual >=0.47.0, Rich >=13.0.0, PyYAML >=6.0, python-frontmatter >=1.0)
-- [ ] T003 [P] Configure ruff, black, and mypy in pyproject.toml
-- [ ] T004 [P] Create package __init__.py with version in src/riseon_agents/__init__.py
-- [ ] T005 [P] Create __main__.py entry point in src/riseon_agents/__main__.py
-- [ ] T006 Create pytest configuration in tests/conftest.py with shared fixtures
+- [X] T001 Create project structure per plan.md (`src/riseon_agents/`, `tests/`)
+- [X] T002 Initialize Python project with pyproject.toml (Textual >=0.47.0, Rich >=13.0.0, PyYAML >=6.0, python-frontmatter >=1.0)
+- [X] T003 [P] Configure ruff, black, and mypy in pyproject.toml
+- [X] T004 [P] Create package __init__.py with version in src/riseon_agents/__init__.py
+- [X] T005 [P] Create __main__.py entry point in src/riseon_agents/__main__.py
+- [X] T006 Create pytest configuration in tests/conftest.py with shared fixtures
 
 ---
 
@@ -41,31 +41,31 @@
 
 ### Data Models (from data-model.md)
 
-- [ ] T007 [P] Implement PermissionLevel enum in src/riseon_agents/models/agent.py
-- [ ] T008 [P] Implement PrimaryAgent dataclass in src/riseon_agents/models/agent.py
-- [ ] T009 [P] Implement Subagent dataclass in src/riseon_agents/models/agent.py
-- [ ] T010 [P] Implement Rule dataclass in src/riseon_agents/models/rule.py
-- [ ] T011 [P] Implement Skill dataclass in src/riseon_agents/models/skill.py
-- [ ] T012 [P] Implement SelectionState enum and SelectableNode dataclass in src/riseon_agents/models/selection.py
-- [ ] T013 [P] Implement GenerationLevel, GenerationTarget, FileStatus, GeneratedFile, GenerationResult in src/riseon_agents/models/generation.py
-- [ ] T014 Create models package __init__.py with exports in src/riseon_agents/models/__init__.py
-- [ ] T014a [P] Create widgets package __init__.py with exports in src/riseon_agents/widgets/__init__.py
-- [ ] T014b [P] Create screens package __init__.py with exports in src/riseon_agents/screens/__init__.py
+- [X] T007 [P] Implement PermissionLevel enum in src/riseon_agents/models/agent.py
+- [X] T008 [P] Implement PrimaryAgent dataclass in src/riseon_agents/models/agent.py
+- [X] T009 [P] Implement Subagent dataclass in src/riseon_agents/models/agent.py
+- [X] T010 [P] Implement Rule dataclass in src/riseon_agents/models/rule.py
+- [X] T011 [P] Implement Skill dataclass in src/riseon_agents/models/skill.py
+- [X] T012 [P] Implement SelectionState enum and SelectableNode dataclass in src/riseon_agents/models/selection.py
+- [X] T013 [P] Implement GenerationLevel, GenerationTarget, FileStatus, GeneratedFile, GenerationResult in src/riseon_agents/models/generation.py
+- [X] T014 Create models package __init__.py with exports in src/riseon_agents/models/__init__.py
+- [X] T014a [P] Create widgets package __init__.py with exports in src/riseon_agents/widgets/__init__.py
+- [X] T014b [P] Create screens package __init__.py with exports in src/riseon_agents/screens/__init__.py
 
 ### Parsing Infrastructure
 
-- [ ] T015 Implement frontmatter parser (YAML + Markdown body) in src/riseon_agents/parsing/frontmatter.py
-- [ ] T016 Implement AgentRepository for agent discovery in src/riseon_agents/parsing/repository.py
-- [ ] T017 Create parsing package __init__.py with exports in src/riseon_agents/parsing/__init__.py
+- [X] T015 Implement frontmatter parser (YAML + Markdown body) in src/riseon_agents/parsing/frontmatter.py
+- [X] T016 Implement AgentRepository for agent discovery in src/riseon_agents/parsing/repository.py
+- [X] T017 Create parsing package __init__.py with exports in src/riseon_agents/parsing/__init__.py
 
 ### Test Fixtures
 
-- [ ] T018 [P] Create sample agent fixtures in tests/fixtures/agents/ (at least 1 primary, 2 subagents, 1 rule, 1 skill)
-- [ ] T019 [P] Create tests for data models in tests/test_models/test_agent.py
-- [ ] T020 [P] Create tests for selection model in tests/test_models/test_selection.py
-- [ ] T021 [P] Create tests for generation model in tests/test_models/test_generation.py
-- [ ] T022 Create tests for frontmatter parser in tests/test_parsing/test_frontmatter.py
-- [ ] T023 Create tests for AgentRepository in tests/test_parsing/test_repository.py
+- [X] T018 [P] Create sample agent fixtures in tests/fixtures/agents/ (at least 1 primary, 2 subagents, 1 rule, 1 skill)
+- [X] T019 [P] Create tests for data models in tests/test_models/test_agent.py
+- [X] T020 [P] Create tests for selection model in tests/test_models/test_selection.py
+- [X] T021 [P] Create tests for generation model in tests/test_models/test_generation.py
+- [X] T022 Create tests for frontmatter parser in tests/test_parsing/test_frontmatter.py
+- [X] T023 Create tests for AgentRepository in tests/test_parsing/test_repository.py
 
 **Checkpoint**: Foundation ready - data models, parsing, and fixtures complete. User story implementation can now begin.
 
