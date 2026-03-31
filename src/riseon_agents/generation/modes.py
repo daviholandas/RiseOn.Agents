@@ -149,9 +149,12 @@ class ModesGenerator:
         Returns:
             List of lines for the mode entry.
         """
+        # T512: Include emoji in name field; space separator is intentional
+        display_name = f"{agent.emoji} {agent.display_name}" if agent.emoji else agent.display_name
+
         lines = [
             f"  - slug: {agent.slug}",
-            f"    name: {agent.display_name}",
+            f"    name: {display_name}",
             f"    description: {agent.description}",
             "    roleDefinition: |",
         ]

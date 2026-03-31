@@ -46,6 +46,7 @@ class PrimaryAgent:
 
     # Metadata
     source_path: Path | None = None
+    emoji: str | None = None  # T510: Optional emoji from frontmatter or keyword-based default
 
     @property
     def slug(self) -> str:

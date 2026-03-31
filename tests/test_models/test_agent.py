@@ -179,3 +179,36 @@ class TestSubagent:
         assert subagent.model_variant is None
         assert subagent.target == "opencode"
         assert subagent.parent_agent is None
+
+
+class TestPrimaryAgentEmoji:
+    """T505: Tests for PrimaryAgent emoji field."""
+
+    def test_emoji_field_defaults_to_none(self):
+        """T505: PrimaryAgent.emoji field defaults to None."""
+        agent = PrimaryAgent(
+            name="test-agent",
+            description="Test",
+            markdown_body="# Test",
+        )
+        assert agent.emoji is None
+
+    def test_emoji_field_can_be_set(self):
+        """T505: PrimaryAgent.emoji field can hold an emoji string."""
+        agent = PrimaryAgent(
+            name="test-agent",
+            description="Test",
+            markdown_body="# Test",
+            emoji="🏗️",
+        )
+        assert agent.emoji == "🏗️"
+
+    def test_emoji_field_is_optional(self):
+        """T505: PrimaryAgent can be created without emoji field."""
+        agent = PrimaryAgent(
+            name="test-agent",
+            description="Test",
+            markdown_body="# Test",
+        )
+        # Should not raise
+        assert hasattr(agent, "emoji")

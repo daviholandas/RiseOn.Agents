@@ -92,9 +92,12 @@ class PreviewPanel(Vertical):
         self.current_preview = content
 
         if self.content_widget:
-            # Use syntax highlighting for YAML content
+            # T405-T406: Use syntax highlighting for YAML and Markdown content
             if node_type in ("primary_agent", "subagent"):
                 syntax = Syntax(content, "yaml", theme="monokai", line_numbers=True)
+                self.content_widget.update(syntax)
+            elif node_type in ("rule", "skill"):
+                syntax = Syntax(content, "markdown", theme="monokai")
                 self.content_widget.update(syntax)
             else:
                 self.content_widget.update(Text(content))
@@ -157,6 +160,25 @@ class PreviewPanel(Vertical):
         # Add markdown body as literal block
         for line in agent.markdown_body.split("\n"):
             lines.append(f"      {line}")
+
+        # T408: Add handoffs section to PrimaryAgent preview
+        # Note: handoffs referencing subagents not in the agent's subagents list
+        # are silently skipped (consistent with HandoffSectionGenerator behavior)
+        if agent.handoffs and agent.subagents:
+            subagent_map = {s.slug: s.description for s in agent.subagents}
+            handoff_entries = [
+                (slug, subagent_map[slug])
+                for slug in agent.handoffs
+                if slug in subagent_map
+            ]
+            if handoff_entries:
+                lines.append("")
+                lines.append("      ## Available Subagents for Delegation")
+                lines.append("")
+                lines.append("      | Subagent | Description |")
+                lines.append("      |----------|-------------|")
+                for slug, description in handoff_entries:
+                    lines.append(f"      | {slug} | {description} |")
 
         # Add groups based on permissions
         groups = self._map_permissions_to_groups(agent.permissions)
@@ -270,6 +292,34 @@ class PreviewPanel(Vertical):
         ]
 
         return "\n".join(lines)
+
+    def get_rule_syntax(self, rule: Rule) -> Syntax:
+        """Get Syntax object with markdown highlighting for a Rule.
+
+        T405: Apply Syntax(markdown) for Rules.
+
+        Args:
+            rule: The Rule to get syntax for.
+
+        Returns:
+            Rich Syntax object with markdown lexer.
+        """
+        content = self.generate_preview_for_rule(rule)
+        return Syntax(content, "markdown", theme="monokai")
+
+    def get_skill_syntax(self, skill: Skill) -> Syntax:
+        """Get Syntax object with markdown highlighting for a Skill.
+
+        T406: Apply Syntax(markdown) for Skills.
+
+        Args:
+            skill: The Skill to get syntax for.
+
+        Returns:
+            Rich Syntax object with markdown lexer.
+        """
+        content = self.generate_preview_for_skill(skill)
+        return Syntax(content, "markdown", theme="monokai")
 
     def _map_permissions_to_groups(self, permissions: dict) -> list[str]:
         """Map agent permissions to Kilo Code groups.

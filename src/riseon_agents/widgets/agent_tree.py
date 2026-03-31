@@ -53,12 +53,12 @@ class AgentTreeNode:
         Returns:
             String containing the appropriate icon.
         """
-        # Type icons
+        # T609: Use emoji icons for node types (US6 - Visual Redesign)
         type_icons = {
-            "primary_agent": "◉",
-            "subagent": "○",
-            "rule": "▪",
-            "skill": "★",
+            "primary_agent": "📦",
+            "subagent": "🤖",
+            "rule": "📋",
+            "skill": "⚡",
         }
 
         # Selection state icons
