@@ -3,11 +3,63 @@
 Implements T050: User Story 5 - Generate custom_modes.yaml.
 """
 
+from dataclasses import dataclass
 from datetime import datetime
 from pathlib import Path
 
-from riseon_agents.models.agent import PermissionLevel, PrimaryAgent
+from riseon_agents.models.agent import PermissionLevel, PrimaryAgent, Subagent
 from riseon_agents.models.generation import FileStatus, GenerationResult
+
+
+@dataclass
+class HandoffEntry:
+    """Entry in the handoffs section."""
+
+    slug: str
+    description: str
+
+
+class HandoffSectionGenerator:
+    """Generates the '## Available Subagents for Delegation' section."""
+
+    SECTION_HEADER = "## Available Subagents for Delegation"
+
+    @classmethod
+    def generate(cls, handoffs: list[str], subagents: list[Subagent]) -> str | None:
+        """Generate handoff section markdown.
+
+        Args:
+            handoffs: List of subagent slugs from handoffs field.
+            subagents: List of available Subagent objects.
+
+        Returns:
+            Markdown string or None if no valid handoffs.
+        """
+        if not handoffs:
+            return None
+
+        subagent_map = {s.slug: s.description for s in subagents}
+
+        entries = []
+        for slug in handoffs:
+            if slug in subagent_map:
+                entries.append(HandoffEntry(slug, subagent_map[slug]))
+
+        if not entries:
+            return None
+
+        lines = [
+            "",
+            cls.SECTION_HEADER,
+            "",
+            "| Subagent | Description |",
+            "|----------|-------------|",
+        ]
+
+        for entry in entries:
+            lines.append(f"| {entry.slug} | {entry.description} |")
+
+        return "\n".join(lines)
 
 
 class ModesGenerator:
@@ -107,6 +159,12 @@ class ModesGenerator:
         # Add markdown body as literal block
         for line in agent.markdown_body.split("\n"):
             lines.append(f"      {line}")
+
+        # T106: Add handoff section if handoffs exist
+        handoff_section = HandoffSectionGenerator.generate(agent.handoffs, agent.subagents)
+        if handoff_section:
+            for line in handoff_section.split("\n"):
+                lines.append(f"      {line}")
 
         # Add groups based on permissions
         groups = self._map_permissions_to_groups(agent.permissions)

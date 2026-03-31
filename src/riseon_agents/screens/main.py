@@ -15,6 +15,8 @@ from textual.widgets import Footer, Header, ProgressBar, Static
 
 from riseon_agents.generation.generator import KiloCodeGenerator
 from riseon_agents.models.generation import GenerationLevel
+from riseon_agents.screens.dialogs import ConfirmResult
+from riseon_agents.screens.target_dialog import TargetSelectionResult
 from riseon_agents.widgets.agent_tree import AgentTree
 from riseon_agents.widgets.help_overlay import HelpOverlay
 from riseon_agents.widgets.preview import PreviewPanel
@@ -224,25 +226,86 @@ class MainScreen(Screen):
             )
             return
 
-        # Show progress bar
-        if self.progress_bar:
-            self.progress_bar.display = True
-            self.progress_bar.update(progress=0)
-
-        # Check for existing files
-        existing_files = self.generator.check_existing_files(
-            selected_agents, self.generation_level, Path.cwd()
+        # T207: Show target selection dialog first
+        self.app.push_screen(
+            self._create_target_selection_dialog(),
+            self._on_target_selected(selected_agents),
         )
 
-        if existing_files:
-            # T059: Show confirmation dialog for overwrite
-            self.app.push_screen(
-                self._create_confirm_dialog(existing_files),
-                lambda confirmed: self._do_generate(selected_agents) if confirmed else None,
+    def _on_target_selected(self, selected_agents: list) -> callable:
+        """Callback when target is selected.
+
+        Args:
+            selected_agents: List of selected PrimaryAgent objects.
+
+        Returns:
+            Callback function for the dialog result.
+        """
+
+        def callback(result: TargetSelectionResult) -> None:
+            """Handle target selection result.
+
+            Args:
+                result: TargetSelectionResult from dialog.
+            """
+            if result.cancelled:
+                return
+
+            # Update generation level
+            self.generation_level = result.level
+
+            # Show progress bar
+            if self.progress_bar:
+                self.progress_bar.display = True
+                self.progress_bar.update(progress=0)
+
+            # Check for existing files
+            existing_files = self.generator.check_existing_files(
+                selected_agents, self.generation_level, Path.cwd()
             )
-        else:
-            # Generate directly
-            self._do_generate(selected_agents)
+
+            if existing_files:
+                # T059: Show confirmation dialog for overwrite
+                self.app.push_screen(
+                    self._create_confirm_dialog(existing_files),
+                    self._on_confirm_selected(selected_agents),
+                )
+            else:
+                # Generate directly
+                self._do_generate(selected_agents)
+
+        return callback
+
+    def _on_confirm_selected(self, selected_agents: list) -> callable:
+        """Callback when confirm dialog result is received.
+
+        Args:
+            selected_agents: List of selected PrimaryAgent objects.
+
+        Returns:
+            Callback function for the dialog result.
+        """
+
+        def callback(result: ConfirmResult) -> None:
+            """Handle confirm dialog result.
+
+            Args:
+                result: ConfirmResult from dialog.
+            """
+            if result == ConfirmResult.YES:
+                self._do_generate(selected_agents)
+
+        return callback
+
+    def _create_target_selection_dialog(self):
+        """Create target selection dialog.
+
+        Returns:
+            TargetSelectionDialog instance.
+        """
+        from riseon_agents.screens.target_dialog import TargetSelectionDialog
+
+        return TargetSelectionDialog()
 
     def _do_generate(self, agents: list) -> None:
         """Perform the actual generation.

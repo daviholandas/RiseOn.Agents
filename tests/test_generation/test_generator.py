@@ -564,6 +564,76 @@ name: test-agent
         assert result.errors[0].error_type == "file_not_found"
 
 
+class TestHandoffValidation:
+    """T104, T105: Tests for handoff validation."""
+
+    def test_validate_handoffs_detects_invalid_subagent(self):
+        """T104: _validate_handoffs returns error for non-existent subagent."""
+        agent = PrimaryAgent(
+            name="architect",
+            description="Software architect",
+            markdown_body="# Architect",
+            permissions={},
+            subagents=[],  # No subagents defined
+            handoffs=["non-existent-slug"],  # But we reference one
+            rules=[],
+            skills=[],
+        )
+
+        generator = KiloCodeGenerator()
+        errors = generator._validate_handoffs([agent])
+
+        assert len(errors) == 1
+        assert "non-existent-slug" in errors[0].message
+        assert "non-existent subagent" in errors[0].message
+
+    def test_validate_handoffs_passes_for_valid_subagents(self):
+        """T105: _validate_handoffs returns no errors for valid subagents."""
+        subagent = Subagent(
+            name="code-reviewer",
+            description="Reviews code for quality",
+            markdown_body="# Code Reviewer",
+            permissions={},
+        )
+        agent = PrimaryAgent(
+            name="architect",
+            description="Software architect",
+            markdown_body="# Architect",
+            permissions={},
+            subagents=[subagent],
+            handoffs=["code-reviewer"],  # Valid reference
+            rules=[],
+            skills=[],
+        )
+
+        generator = KiloCodeGenerator()
+        errors = generator._validate_handoffs([agent])
+
+        assert len(errors) == 0
+
+    def test_validate_handoffs_includes_file_path(self):
+        """T111: ValidationError includes file path."""
+        from pathlib import Path
+
+        agent = PrimaryAgent(
+            name="architect",
+            description="Software architect",
+            markdown_body="# Architect",
+            permissions={},
+            subagents=[],
+            handoffs=["ghost-agent"],
+            rules=[],
+            skills=[],
+            source_path=Path("/test/agents/architect.agent.md"),
+        )
+
+        generator = KiloCodeGenerator()
+        errors = generator._validate_handoffs([agent])
+
+        assert len(errors) == 1
+        assert errors[0].file_path == Path("/test/agents/architect.agent.md")
+
+
 class TestGenerationValidation:
     """Tests for validating generated files."""
 

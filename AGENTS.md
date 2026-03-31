@@ -3,6 +3,7 @@
 Auto-generated from all feature plans. Last updated: 2026-03-30
 
 ## Active Technologies
+- File system (`.kilo/`, `.kilocode/`, `~/.kilocode/`) (004-tui-improvements)
 
 - Python 3.11+ + Textual >=0.47.0, Rich >=13.0.0, PyYAML >=6.0, python-frontmatter >=1.0 (002-kilocode-generator)
 
@@ -183,10 +184,14 @@ class TestClassName:
 - Ignores missing imports for: frontmatter, textual, rich
 
 ## Recent Changes
+- 004-tui-improvements: Phases 2, 3, 4 complete:
+  - US1 (T101-T111): HandoffSectionGenerator, _validate_handoffs, handoff section in custom_modes.yaml
+  - US2 (T201-T214): TargetSelectionDialog with RadioSet for Local/Global selection
+  - US3 (T301-T310): ConfirmDialog with 3-button horizontal layout, Cancel button, ESC binding
+  - 191 tests passing
 
 - 002-kilocode-generator: Added Python 3.11+ + Textual >=0.47.0, Rich >=13.0.0, PyYAML >=6.0, python-frontmatter >=1.0
 - Phase 9: Added HelpOverlay widget (? key), permission error handling, generation interruption cleanup
-- All 166 tests passing, 91 tasks complete across 9 phases
 
 <!-- MANUAL ADDITIONS START -->
 <!-- MANUAL ADDITIONS END -->

@@ -3,11 +3,107 @@
 Covers T045: User Story 5 - Generate custom_modes.yaml.
 """
 
-
 import pytest
 
-from riseon_agents.generation.modes import ModesGenerator
-from riseon_agents.models.agent import PermissionLevel, PrimaryAgent
+from riseon_agents.generation.modes import HandoffSectionGenerator, ModesGenerator
+from riseon_agents.models.agent import PermissionLevel, PrimaryAgent, Subagent
+
+
+class TestHandoffSection:
+    """T101-T105: Tests for handoff section generation."""
+
+    def test_generate_returns_markdown_table(self):
+        """T101: HandoffSectionGenerator.generate() returns Markdown table."""
+        subagents = [
+            Subagent(
+                name="code-reviewer",
+                description="Reviews code for quality",
+                markdown_body="# Code Reviewer",
+                permissions={},
+            ),
+        ]
+        result = HandoffSectionGenerator.generate(["code-reviewer"], subagents)
+        assert result is not None
+        assert "| Subagent | Description |" in result
+        assert "| code-reviewer | Reviews code for quality |" in result
+        assert "## Available Subagents for Delegation" in result
+
+    def test_empty_handoffs_returns_none(self):
+        """T103: Empty handoffs list returns None."""
+        subagents = [
+            Subagent(
+                name="code-reviewer",
+                description="Reviews code for quality",
+                markdown_body="# Code Reviewer",
+                permissions={},
+            ),
+        ]
+        result = HandoffSectionGenerator.generate([], subagents)
+        assert result is None
+
+    def test_invalid_handoff_slug_returns_none(self):
+        """T103: Invalid handoff slug returns None."""
+        subagents = [
+            Subagent(
+                name="code-reviewer",
+                description="Reviews code for quality",
+                markdown_body="# Code Reviewer",
+                permissions={},
+            ),
+        ]
+        result = HandoffSectionGenerator.generate(["non-existent"], subagents)
+        assert result is None
+
+
+class TestHandoffSectionIntegration:
+    """T102: Tests for handoff section integration in _generate_mode_entry."""
+
+    def test_mode_entry_includes_handoff_section_when_handoffs_exist(self, tmp_path):
+        """Handoff section appears in generated mode entry."""
+        subagent = Subagent(
+            name="code-reviewer",
+            description="Reviews code for quality",
+            markdown_body="# Code Reviewer",
+            permissions={},
+        )
+        agent = PrimaryAgent(
+            name="architect",
+            description="Software architect",
+            markdown_body="# Architect",
+            permissions={},
+            subagents=[subagent],
+            handoffs=["code-reviewer"],
+            rules=[],
+            skills=[],
+        )
+
+        generator = ModesGenerator()
+        result = generator.generate([agent], tmp_path)
+
+        assert result.success
+        content = result.files[0].path.read_text()
+        assert "## Available Subagents for Delegation" in content
+        assert "| code-reviewer |" in content
+
+    def test_mode_entry_excludes_handoff_section_when_no_handoffs(self, tmp_path):
+        """No handoff section when agent has no handoffs."""
+        agent = PrimaryAgent(
+            name="architect",
+            description="Software architect",
+            markdown_body="# Architect",
+            permissions={},
+            subagents=[],
+            handoffs=[],
+            rules=[],
+            skills=[],
+        )
+
+        generator = ModesGenerator()
+        result = generator.generate([agent], tmp_path)
+
+        assert result.success
+        content = result.files[0].path.read_text()
+        assert "## Available Subagents for Delegation" not in content
 
 
 class TestModesGenerator:

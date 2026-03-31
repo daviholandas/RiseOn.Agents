@@ -21,6 +21,7 @@ from riseon_agents.models.generation import (
     GenerationLevel,
     GenerationResult,
     GenerationTarget,
+    ValidationError,
     ValidationResult,
     ValidationStatus,
 )
@@ -514,3 +515,26 @@ class KiloCodeGenerator:
                     dir_path.rmdir()
             except (OSError, PermissionError):
                 pass
+
+    def _validate_handoffs(self, agents: list[PrimaryAgent]) -> list[ValidationError]:
+        """T110: Validate that handoff references point to existing subagents.
+
+        Args:
+            agents: List of PrimaryAgent objects to validate.
+
+        Returns:
+            List of ValidationError objects for invalid handoffs.
+        """
+        errors = []
+        for agent in agents:
+            subagent_slugs = {s.slug for s in agent.subagents}
+            for handoff in agent.handoffs:
+                if handoff not in subagent_slugs:
+                    errors.append(
+                        ValidationError(
+                            file_path=agent.source_path or Path("unknown"),
+                            message=f"Handoff '{handoff}' references non-existent subagent",
+                            error_type="invalid_handoff",
+                        )
+                    )
+        return errors

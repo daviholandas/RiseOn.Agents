@@ -4,13 +4,22 @@ Implements T033: User Story 1 - Error screens for missing/empty agents folder.
 Implements T078, T079: User Story 6 - Show validation results with file and line info.
 """
 
+from enum import Enum
 
 from textual.app import ComposeResult
-from textual.containers import Container, Vertical
+from textual.containers import Container, Horizontal, Vertical
 from textual.screen import ModalScreen
 from textual.widgets import Button, Label, Static
 
 from riseon_agents.models.generation import ValidationError
+
+
+class ConfirmResult(Enum):
+    """Result of confirmation dialog."""
+
+    YES = "yes"
+    NO = "no"
+    CANCEL = "cancel"
 
 
 class ErrorDialog(ModalScreen):
@@ -110,8 +119,10 @@ class EmptyAgentsDialog(ErrorDialog):
         )
 
 
-class ConfirmDialog(ModalScreen):
-    """Confirmation dialog with Yes/No options.
+class ConfirmDialog(ModalScreen[ConfirmResult]):
+    """Confirmation dialog with Yes/No/Cancel options.
+
+    T301-T309: Enhanced with 3-button horizontal layout.
 
     Attributes:
         title: Dialog title
@@ -122,7 +133,7 @@ class ConfirmDialog(ModalScreen):
     ConfirmDialog {
         align: center middle;
     }
-    
+
     ConfirmDialog > Container {
         width: 60;
         height: auto;
@@ -131,27 +142,33 @@ class ConfirmDialog(ModalScreen):
         background: $surface;
         padding: 1 2;
     }
-    
+
     ConfirmDialog > Container > Label {
         text-align: center;
         text-style: bold;
         margin-bottom: 1;
     }
-    
+
     ConfirmDialog > Container > Static {
         text-align: center;
         margin-bottom: 1;
     }
-    
-    ConfirmDialog > Container > Vertical {
+
+    ConfirmDialog > Container > Horizontal {
         height: auto;
         align: center middle;
+        width: 100%;
     }
-    
-    ConfirmDialog > Container > Vertical > Button {
+
+    ConfirmDialog > Container > Horizontal > Button {
         margin: 0 1;
+        min-width: 10;
     }
     """
+
+    BINDINGS = [
+        ("escape", "cancel", "Cancel"),
+    ]
 
     def __init__(self, title: str, message: str) -> None:
         """Initialize the confirmation dialog.
@@ -170,13 +187,24 @@ class ConfirmDialog(ModalScreen):
             yield Label(self.title)
             yield Static(self.message)
 
-            with Vertical():
+            with Horizontal():
                 yield Button("Yes", id="yes", variant="primary")
                 yield Button("No", id="no", variant="error")
+                yield Button("Cancel", id="cancel")
 
     def on_button_pressed(self, event: Button.Pressed) -> None:
         """Handle button press."""
-        self.dismiss(event.button.id)
+        button_id = event.button.id
+        if button_id == "yes":
+            self.dismiss(ConfirmResult.YES)
+        elif button_id == "no":
+            self.dismiss(ConfirmResult.NO)
+        elif button_id == "cancel":
+            self.dismiss(ConfirmResult.CANCEL)
+
+    def action_cancel(self) -> None:
+        """Handle cancel action (ESC key)."""
+        self.dismiss(ConfirmResult.CANCEL)
 
 
 class ResultDialog(ModalScreen):

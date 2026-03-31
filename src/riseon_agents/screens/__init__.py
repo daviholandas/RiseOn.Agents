@@ -10,6 +10,7 @@ from riseon_agents.screens.dialogs import (
     ResultDialog,
 )
 from riseon_agents.screens.main import MainScreen
+from riseon_agents.screens.target_dialog import TargetSelectionDialog
 
 __all__ = [
     "MainScreen",
@@ -17,4 +18,5 @@ __all__ = [
     "EmptyAgentsDialog",
     "ConfirmDialog",
     "ResultDialog",
+    "TargetSelectionDialog",
 ]
