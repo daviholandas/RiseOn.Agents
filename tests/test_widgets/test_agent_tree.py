@@ -357,12 +357,12 @@ class TestAgentTreeNode:
         assert "◪" in icon
 
     def test_node_icon_for_type(self):
-        """AgentTreeNode returns correct icon for node type."""
+        """AgentTreeNode returns correct emoji icon for node type (T609)."""
         test_cases = [
-            ("primary_agent", "◉"),
-            ("subagent", "○"),
-            ("rule", "▪"),
-            ("skill", "★"),
+            ("primary_agent", "📦"),
+            ("subagent", "🤖"),
+            ("rule", "📋"),
+            ("skill", "⚡"),
         ]
 
         for node_type, expected_icon in test_cases:
@@ -615,3 +615,87 @@ class TestAgentTreeSelection:
         # Should have selected count > 0
         count = tree.get_selected_count()
         assert count > 0
+
+
+class TestTreeIcons:
+    """T604: Tests for emoji tree icons in agent tree nodes."""
+
+    def test_primary_agent_uses_package_icon(self):
+        """T604: Primary agent nodes use 📦 icon."""
+        agent = PrimaryAgent(
+            name="architect",
+            description="Software architect",
+            markdown_body="# Architect",
+            permissions={},
+        )
+        tree = AgentTree()
+        tree.populate_from_agents([agent])
+        # Get the first child of root (the primary agent node)
+        agent_node = tree.root.children[0]
+        label = str(agent_node.label)
+        assert "📦" in label
+
+    def test_subagent_uses_robot_icon(self):
+        """T604: Subagent nodes use 🤖 icon."""
+        subagent = Subagent(
+            name="sub-agent",
+            description="Sub agent",
+            markdown_body="# Sub",
+            permissions={},
+            parent_agent="architect",
+        )
+        agent = PrimaryAgent(
+            name="architect",
+            description="Software architect",
+            markdown_body="# Architect",
+            permissions={},
+            subagents=[subagent],
+        )
+        tree = AgentTree()
+        tree.populate_from_agents([agent])
+        # Agent node > Subagents container > subagent node
+        agent_node = tree.root.children[0]
+        subagents_container = agent_node.children[0]
+        subagent_node = subagents_container.children[0]
+        label = str(subagent_node.label)
+        assert "🤖" in label
+
+    def test_rule_uses_clipboard_icon(self):
+        """T604: Rule nodes use 📋 icon."""
+        from riseon_agents.models.rule import Rule
+
+        rule = Rule(name="test-rule", content="Rule content")
+        agent = PrimaryAgent(
+            name="architect",
+            description="Software architect",
+            markdown_body="# Architect",
+            permissions={},
+            rules=[rule],
+        )
+        tree = AgentTree()
+        tree.populate_from_agents([agent])
+        agent_node = tree.root.children[0]
+        rules_container = agent_node.children[0]
+        rule_node = rules_container.children[0]
+        label = str(rule_node.label)
+        assert "📋" in label
+
+    def test_skill_uses_lightning_icon(self):
+        """T604: Skill nodes use ⚡ icon."""
+        from riseon_agents.models.skill import Skill
+
+        skill = Skill(name="test-skill", description="Test skill", content="Skill content")
+        agent = PrimaryAgent(
+            name="architect",
+            description="Software architect",
+            markdown_body="# Architect",
+            permissions={},
+            skills=[skill],
+        )
+        tree = AgentTree()
+        tree.populate_from_agents([agent])
+        agent_node = tree.root.children[0]
+        skills_container = agent_node.children[0]
+        skill_node = skills_container.children[0]
+        label = str(skill_node.label)
+        assert "⚡" in label

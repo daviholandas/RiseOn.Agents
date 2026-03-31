@@ -1,6 +1,7 @@
 """Main Textual application.
 
 Implements T032: User Story 1 - Create KiloGeneratorApp.
+Implements T607, T610-T611: User Story 6 - Splash screen and color palette.
 """
 
 from pathlib import Path
@@ -10,6 +11,7 @@ from textual.app import App
 from riseon_agents.parsing.repository import AgentRepository
 from riseon_agents.screens.dialogs import EmptyAgentsDialog
 from riseon_agents.screens.main import MainScreen
+from riseon_agents.screens.splash import SplashScreen
 from riseon_agents.widgets.help_overlay import HelpOverlay
 
 
@@ -23,13 +25,27 @@ class KiloGeneratorApp(App):
     TITLE = "RiseOn.Agents - Kilo Code Generator"
     SUB_TITLE = "Generate Kilo Code configurations from agent definitions"
 
+    # T610-T611: Green/cyan color palette CSS variables
     CSS = """
     Screen {
         align: center middle;
     }
-    
+
     #loading {
         text-align: center;
+    }
+
+    /* T611: Apply green/cyan palette to borders and highlights */
+    .panel-border {
+        border: solid $success;
+    }
+
+    Tree > .tree--cursor {
+        background: $success 20%;
+    }
+
+    Tree > .tree--highlight {
+        background: $accent 20%;
     }
     """
 
@@ -46,6 +62,11 @@ class KiloGeneratorApp(App):
 
     def on_mount(self) -> None:
         """Handle application mount event."""
+        # T607: Show splash screen first, then load agents
+        self.push_screen(SplashScreen(), self._on_splash_dismissed)
+
+    def _on_splash_dismissed(self, _result: None) -> None:
+        """Handle splash screen dismissal and proceed to main flow."""
         # Set up the agent repository
         self.agent_repository = AgentRepository(self.agents_path)
 

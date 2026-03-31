@@ -13,6 +13,7 @@ from riseon_agents.models.agent import PermissionLevel, PrimaryAgent, Subagent
 from riseon_agents.models.rule import Rule
 from riseon_agents.models.skill import Skill
 from riseon_agents.parsing.frontmatter import FrontmatterParser, ParsedDocument
+from riseon_agents.utils.emoji import EmojiMapper
 
 logger = logging.getLogger(__name__)
 
@@ -172,8 +173,13 @@ class AgentRepository:
         handoffs_raw = self.parser.get_list(doc, "handoffs")
         handoffs = self._parse_handoffs(handoffs_raw)
 
+        # T511: Parse emoji from frontmatter, or use EmojiMapper keyword default
+        name = self.parser.get_required_string(doc, "name")
+        emoji_raw = self.parser.get_optional_string(doc, "emoji")
+        emoji = emoji_raw if emoji_raw else EmojiMapper.get_emoji(name)
+
         return PrimaryAgent(
-            name=self.parser.get_required_string(doc, "name"),
+            name=name,
             description=self.parser.get_required_string(doc, "description"),
             markdown_body=doc.body.strip(),
             tools=self.parser.get_list(doc, "tools"),
@@ -182,6 +188,7 @@ class AgentRepository:
             permissions=permissions,
             handoffs=handoffs,
             source_path=doc.source_path,
+            emoji=emoji,
         )
 
     def _parse_permissions(self, permissions_raw: dict[str, Any]) -> dict[str, PermissionLevel]:

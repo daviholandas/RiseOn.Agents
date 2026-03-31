@@ -292,3 +292,70 @@ class TestModesGenerator:
         output_path = tmp_path / "custom_modes.yaml"
         assert output_path.exists()
         assert output_path.read_text() == result.files[0].path.read_text()
+
+
+class TestEmojiInName:
+    """T506: Tests for emoji inclusion in generated agent name."""
+
+    def test_emoji_from_agent_field_included_in_name(self, tmp_path):
+        """T506: Explicit emoji from agent.emoji field appears in name."""
+        agent = PrimaryAgent(
+            name="architect",
+            description="Software architect",
+            markdown_body="# Architect",
+            permissions={},
+            subagents=[],
+            handoffs=[],
+            rules=[],
+            skills=[],
+            emoji="🏗️",
+        )
+
+        generator = ModesGenerator()
+        result = generator.generate([agent], tmp_path)
+
+        assert result.success
+        content = result.files[0].path.read_text()
+        assert "🏗️ Architect" in content
+
+    def test_no_emoji_field_excludes_emoji_from_name(self, tmp_path):
+        """T506: Agent with no emoji field uses display_name without emoji prefix."""
+        agent = PrimaryAgent(
+            name="architect",
+            description="Software architect",
+            markdown_body="# Architect",
+            permissions={},
+            subagents=[],
+            handoffs=[],
+            rules=[],
+            skills=[],
+            emoji=None,
+        )
+
+        generator = ModesGenerator()
+        result = generator.generate([agent], tmp_path)
+
+        assert result.success
+        content = result.files[0].path.read_text()
+        # No emoji prefix, just plain display name
+        assert "name: Architect" in content
+
+    def test_emoji_appears_before_display_name(self, tmp_path):
+        """T506: Emoji appears at beginning of name field."""
+        agent = PrimaryAgent(
+            name="security-agent",
+            description="Security specialist",
+            markdown_body="# Security",
+            permissions={},
+            subagents=[],
+            handoffs=[],
+            rules=[],
+            skills=[],
+            emoji="🔒",
+        )
+
+        generator = ModesGenerator()
+        result = generator.generate([agent], tmp_path)
+
+        content = result.files[0].path.read_text()
+        assert "name: 🔒 Security Agent" in content

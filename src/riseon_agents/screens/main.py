@@ -33,32 +33,33 @@ class MainScreen(Screen):
     MainScreen {
         layout: horizontal;
     }
-    
+
     #tree-panel {
         width: 40%;
         height: 100%;
-        border: solid $primary;
+        border: solid $success;
     }
-    
+
     #preview-panel {
         width: 60%;
         height: 100%;
-        border: solid $primary;
+        border: solid $success;
     }
-    
+
     AgentTree {
         height: 100%;
         width: 100%;
     }
-    
+
     #status-bar {
         height: 1;
         background: $surface-darken-1;
         color: $text;
         padding: 0 1;
         content-align: center middle;
+        border-top: solid $accent;
     }
-    
+
     #progress-bar {
         height: 1;
         margin: 0 1;

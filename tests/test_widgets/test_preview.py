@@ -1,9 +1,11 @@
 """Tests for PreviewPanel widget.
 
 Implements T060-T061: User Story 3 - Preview Generated Configuration.
+Implements T401-T404: User Story 4 - Enhanced Preview for Rules and Skills.
 """
 
 import pytest
+from rich.syntax import Syntax
 
 from riseon_agents.models.agent import PermissionLevel, PrimaryAgent, Subagent
 from riseon_agents.models.rule import Rule
@@ -134,3 +136,86 @@ class TestPreviewPanel:
 
         # YAML content should be present
         assert "slug:" in content or "customModes:" in content
+
+
+class TestPreviewEnhanced:
+    """T401-T404: Tests for enhanced preview with Markdown highlighting and handoffs."""
+
+    @pytest.fixture
+    def sample_rule(self):
+        """Create a sample Rule for testing."""
+        return Rule(
+            name="test-rule",
+            content="# Test Rule\n\nAlways follow best practices.\n\n- Use type hints\n- Write tests",
+        )
+
+    @pytest.fixture
+    def sample_skill(self):
+        """Create a sample Skill for testing."""
+        return Skill(
+            name="test-skill",
+            description="A test skill",
+            content="---\nname: test-skill\ndescription: A test skill\n---\n\n# Skill Content",
+        )
+
+    @pytest.fixture
+    def agent_with_handoffs(self):
+        """Create a PrimaryAgent with handoffs defined."""
+        subagent = Subagent(
+            name="code-reviewer",
+            description="Reviews code quality",
+            markdown_body="# Code Reviewer",
+            permissions={},
+        )
+        return PrimaryAgent(
+            name="architect",
+            description="Software architect",
+            markdown_body="# Architect\n\nDesigns software systems.",
+            permissions={},
+            subagents=[subagent],
+            handoffs=["code-reviewer"],
+            rules=[],
+            skills=[],
+        )
+
+    def test_rule_preview_uses_markdown_syntax(self, sample_rule):
+        """T401: Rules preview uses Syntax(markdown)."""
+        panel = PreviewPanel()
+        syntax = panel.get_rule_syntax(sample_rule)
+        assert isinstance(syntax, Syntax)
+        assert syntax._lexer == "markdown"
+
+    def test_skill_preview_uses_markdown_syntax(self, sample_skill):
+        """T402: Skills preview uses Syntax(markdown)."""
+        panel = PreviewPanel()
+        syntax = panel.get_skill_syntax(sample_skill)
+        assert isinstance(syntax, Syntax)
+        assert syntax._lexer == "markdown"
+
+    def test_long_descriptions_have_vertical_scroll(self):
+        """T403: Long descriptions have vertical scroll capability."""
+        # Panel CSS must include overflow scroll support
+        assert "overflow: auto scroll" in PreviewPanel.DEFAULT_CSS
+
+    def test_primary_agent_preview_includes_handoffs_section(self, agent_with_handoffs):
+        """T404: PrimaryAgent preview includes handoffs section when handoffs defined."""
+        panel = PreviewPanel()
+        content = panel.generate_preview_for_agent(agent_with_handoffs)
+        assert "Available Subagents for Delegation" in content
+        assert "code-reviewer" in content
+
+    def test_primary_agent_preview_no_handoffs_section_when_empty(self):
+        """T404: PrimaryAgent preview omits handoffs section when none defined."""
+        agent = PrimaryAgent(
+            name="simple-agent",
+            description="No handoffs",
+            markdown_body="# Simple",
+            permissions={},
+            handoffs=[],
+            subagents=[],
+            rules=[],
+            skills=[],
+        )
+        panel = PreviewPanel()
+        content = panel.generate_preview_for_agent(agent)
+        assert "Available Subagents for Delegation" not in content
